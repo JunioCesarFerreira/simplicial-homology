@@ -1,0 +1,11 @@
+{
+  "name": "simplicial-homology",
+  "version": "1.0.0",
+  "description": "Interactive web tool to build simplicial complexes and compute their homology groups",
+  "private": true,
+  "license": "MIT",
+  "scripts": {
+    "test": "node --test tests/",
+    "start": "python3 -m http.server 8000"
+  }
+}

@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Simplicial Homology</title>
+  <meta name="description" content="Build simplicial complexes interactively and compute their homology groups over ℤ and 𝔽ₚ.">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header class="topbar">
+    <h1>Simplicial Homology</h1>
+    <div class="topbar-actions">
+      <label class="field">
+        <span>Example</span>
+        <select id="preset">
+          <option value="">Load an example…</option>
+        </select>
+      </label>
+      <button id="undo" title="Undo (Ctrl+Z)">Undo</button>
+      <button id="redo" title="Redo (Ctrl+Shift+Z)">Redo</button>
+      <button id="layout" title="Rearrange vertices with a force layout (L)">Auto layout</button>
+      <button id="fit" title="Fit the complex in view (F)">Fit view</button>
+      <button id="export" title="Download the complex as JSON">Export</button>
+      <button id="import" title="Load a complex from a JSON file">Import</button>
+      <input id="import-file" type="file" accept=".json,application/json" hidden>
+      <button id="clear" class="danger" title="Remove everything">Clear</button>
+    </div>
+  </header>
+
+  <main class="layout">
+    <section class="editor" aria-label="Editor">
+      <div class="toolbar">
+        <div class="selection-info" id="selection-info" aria-live="polite">No vertices selected</div>
+        <div class="toolbar-buttons">
+          <button id="fill" class="primary" title="Add the simplex spanned by the selected vertices (Enter)">Fill simplex</button>
+          <button id="cone" title="Cone off the selection with a new vertex (C)">Cone</button>
+          <button id="remove" title="Remove the selected simplex and everything containing it (Delete)">Remove simplex</button>
+          <button id="delete-vertices" title="Delete the selected vertices (Shift+Delete)">Delete vertices</button>
+        </div>
+      </div>
+      <div class="canvas-wrap">
+        <svg id="canvas" role="application" aria-label="Simplicial complex canvas"></svg>
+        <div class="empty-hint" id="empty-hint">
+          <p><strong>Click</strong> anywhere to add a vertex.</p>
+          <p>Select vertices, then press <kbd>Enter</kbd> to fill the simplex they span.</p>
+        </div>
+      </div>
+      <details class="help">
+        <summary>Controls</summary>
+        <ul>
+          <li><strong>Click empty space</strong> — add a vertex</li>
+          <li><strong>Click a vertex</strong> — toggle it in the selection; <strong>drag</strong> — move it (moves the whole selection if it is selected)</li>
+          <li><strong>Shift + drag</strong> from one vertex to another — add an edge</li>
+          <li><strong>Drag empty space</strong> — box-select vertices (hold Shift to add to the selection)</li>
+          <li><strong>Click an edge, triangle or tetrahedron</strong> — select its vertices</li>
+          <li><kbd>Enter</kbd> fill the simplex spanned by the selection (2 vertices → edge, 3 → triangle, 4 → tetrahedron, …), together with all its faces</li>
+          <li><kbd>C</kbd> cone: a new vertex joined to every simplex inside the selection, e.g. to fill a polygonal hole</li>
+          <li><kbd>Delete</kbd> remove the selected simplex and every simplex containing it (its faces stay); <kbd>Shift</kbd>+<kbd>Delete</kbd> delete the selected vertices</li>
+          <li><kbd>Esc</kbd> clear selection · <kbd>Ctrl</kbd>+<kbd>A</kbd> select all · <kbd>Ctrl</kbd>+<kbd>Z</kbd> / <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>Z</kbd> undo / redo</li>
+          <li><strong>Wheel</strong> zoom · <strong>right- or middle-drag</strong> pan · <kbd>F</kbd> fit view · <kbd>L</kbd> auto layout</li>
+        </ul>
+      </details>
+    </section>
+
+    <aside class="panel" aria-label="Results">
+      <section class="card">
+        <h2>Homology</h2>
+        <div class="summary" id="summary"></div>
+        <div class="table-scroll">
+          <table class="homology-table" id="homology-table"></table>
+        </div>
+        <label class="check">
+          <input type="checkbox" id="reduced"> Reduced homology <span class="muted">(H̃₀ = ker ε / im ∂₁)</span>
+        </label>
+      </section>
+
+      <section class="card">
+        <div class="card-head">
+          <h2>Generators</h2>
+          <label class="field compact">
+            <span>Coefficients</span>
+            <select id="prime">
+              <option value="2">𝔽₂</option>
+              <option value="3">𝔽₃</option>
+              <option value="5">𝔽₅</option>
+              <option value="7">𝔽₇</option>
+              <option value="11">𝔽₁₁</option>
+            </select>
+          </label>
+        </div>
+        <p class="muted small">A basis of H<sub>k</sub>(K; 𝔽<sub>p</sub>) given by representative cycles. Hover or click one to highlight it.</p>
+        <div id="generators"></div>
+      </section>
+
+      <section class="card">
+        <h2>Maximal simplices</h2>
+        <p class="muted small">One simplex per line, vertices separated by spaces or commas. Faces are added automatically.</p>
+        <textarea id="facets" rows="6" spellcheck="false"></textarea>
+        <div class="row">
+          <button id="apply-facets" class="primary">Apply</button>
+          <span class="muted small" id="facets-error" role="alert"></span>
+        </div>
+      </section>
+
+      <section class="card">
+        <details id="matrices-details">
+          <summary><h2>Boundary matrices</h2></summary>
+          <div id="matrices"></div>
+        </details>
+      </section>
+    </aside>
+  </main>
+
+  <script src="js/homology.js"></script>
+  <script src="js/presets.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
