@@ -49,7 +49,7 @@ The drawing is a 2D picture of an abstract complex. Simplices may overlap on scr
 
 - **Over $\mathbb{Z}$.** For each $k$ the code builds the matrix of $\partial_k : C_k \to C_{k-1}$ and computes its invariant factors with the Smith normal form algorithm from go-homology. Then
   $$H_k \cong \mathbb{Z}^{\,n_k - r_k - r_{k+1}} \oplus \bigoplus_{d_i(\partial_{k+1}) > 1} \mathbb{Z}/d_i,$$
-  where $r_k = \operatorname{rank} \partial_k$. Unlike the Go version, the elimination uses `BigInt`, so entries that grow during elimination cannot overflow.
+  where $r_k = \text{rank} \partial_k$. Unlike the Go version, the elimination uses `BigInt`, so entries that grow during elimination cannot overflow.
 - **Over $\mathbb{F}_p$.** This is a separate computation, not derived from the integer result. It is the standard column reduction $R = \partial V$ of the full boundary matrix. Each simplex whose column reduces to zero and is not the pivot of another column contributes the cycle $V_j$, and these cycles form a basis of $H_*(K;\mathbb{F}_p)$. They are the generators listed in the panel.
 
 ## Tests

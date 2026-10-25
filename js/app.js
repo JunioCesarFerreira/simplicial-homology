@@ -593,8 +593,52 @@
     }
   }
 
-  const sub = (n) => String(n).replace(/\d/g, (d) => '₀₁₂₃₄₅₆₇₈₉'[d]).replace('-', '₋');
-  const fieldName = (p) => `𝔽${sub(p)}`;
+  const num = (n) => (n < 0 ? `−${-n}` : String(n));
+
+  // Typesets a small math notation as HTML: x_k and x^{k+1} become sub- and
+  // superscripts, ~H puts a tilde over H, and single letters are set in italic.
+  function math(src, cls = 'math') {
+    const node = html('span', { class: cls });
+    const parse = (str, parent) => {
+      let i = 0;
+      const group = () => {
+        if (str[i] !== '{') return [...str.slice(i)][0] || '';
+        const end = str.indexOf('}', i);
+        return str.slice(i + 1, end);
+      };
+      while (i < str.length) {
+        const c = String.fromCodePoint(str.codePointAt(i));
+        if (c === '_' || c === '^') {
+          i++;
+          const g = group();
+          parse(g, parent.appendChild(document.createElement(c === '_' ? 'sub' : 'sup')));
+          i += str[i] === '{' ? g.length + 2 : g.length;
+        } else if (c === '~') {
+          i++;
+          const g = [...str.slice(i)][0];
+          parse(g, parent.appendChild(html('span', { class: 'tilde' })));
+          i += g.length;
+        } else {
+          const m = /^[A-Za-zα-ω]+/.exec(str.slice(i));
+          if (m && m[0].length === 1) parent.appendChild(html('i', {}, m[0]));
+          else parent.append(m ? m[0] : c);
+          i += m ? m[0].length : c.length;
+        }
+      }
+    };
+    parse(src, node);
+    return node;
+  }
+
+  // ℤ^{2} ⊕ (ℤ/2)^{2}, the notation of H.formatGroup for math().
+  function groupNotation(group) {
+    const parts = [];
+    if (group.rank > 0) parts.push(group.rank === 1 ? 'ℤ' : `ℤ^{${group.rank}}`);
+    const counts = new Map();
+    for (const d of group.torsion) counts.set(String(d), (counts.get(String(d)) || 0) + 1);
+    for (const [d, c] of counts) parts.push(c === 1 ? `ℤ/${d}` : `(ℤ/${d})^{${c}}`);
+    return parts.length ? parts.join(' ⊕ ') : '0';
+  }
 
   function renderResults() {
     const summary = $('summary');
@@ -613,39 +657,54 @@
     const chiBetti = betti.reduce((s, b, k) => s + (k % 2 ? -b : b), 0);
     const components = betti[0];
     const items = [
-      ['dim K', String(z.dimension)],
-      ['f-vector', `(${z.fVector.join(', ')})`],
-      ['χ', `${z.euler}`],
+      [math('dim K'), String(z.dimension)],
+      [math('f-vector'), `(${z.fVector.join(', ')})`],
+      [math('χ'), num(z.euler)],
       ['components', String(components)],
     ];
     const dl = html('dl', { class: 'stats' });
     for (const [k, v] of items) {
       const div = html('div');
-      div.append(html('dt', {}, k), html('dd', {}, v));
+      const dt = html('dt');
+      dt.append(k);
+      div.append(dt, html('dd', {}, v));
       dl.append(div);
     }
     summary.append(dl);
-    summary.append(
-      html(
-        'p',
-        { class: 'muted small' },
-        `χ = Σ(−1)ᵏ nₖ = ${z.euler} = Σ(−1)ᵏ βₖ = ${chiBetti}` + (z.euler === chiBetti ? ' ✓' : ' ✗')
-      )
-    );
+    // χ = Σ (−1)^k n_k = Σ (−1)^k β_k, with the summation index under Σ.
+    const sum = (term) => {
+      const op = html('span', { class: 'bigop' });
+      op.append(html('span', {}, 'Σ'), math('k', 'math limit'));
+      const node = html('span', { class: 'math' });
+      node.append(op, math(term));
+      return node;
+    };
+    const holds = z.euler === chiBetti;
+    const check = html('p', { class: 'euler', title: 'Euler–Poincaré formula: the alternating sums of the simplex counts and of the Betti numbers agree' });
+    const eq = '\u2005=\u2005'; // relation spacing, as in TeX
+    check.append(math(`χ${eq}`), sum('(−1)^k\u2009n_k'));
+    if (!holds) check.append(math(`${eq}${num(z.euler)}`));
+    check.append(math(holds ? eq : ',\u2003'), sum('(−1)^k\u2009β_k'), math(`${eq}${num(chiBetti)}`));
+    check.append(html('span', { class: holds ? 'verdict ok' : 'verdict fail' }, holds ? '✓' : '✗'));
+    summary.append(check);
 
-    const Hk = reduced ? 'H̃' : 'H';
+    const Hk = reduced ? '~H' : 'H';
     const head = html('tr');
     const cols = [
       ['k', 'Dimension'],
-      ['nₖ', 'Number of k-simplices = rank Cₖ'],
-      ['rank ∂ₖ', 'Rank of the boundary map ∂ₖ : Cₖ → Cₖ₋₁ over ℤ'],
-      ['rank Zₖ', 'Cycles: rank ker ∂ₖ = nₖ − rank ∂ₖ'],
-      ['rank Bₖ', 'Boundaries: rank im ∂ₖ₊₁'],
-      [`${Hk}ₖ(ℤ)`, 'Integral homology: ℤ^βₖ ⊕ torsion from the invariant factors of ∂ₖ₊₁'],
-      ['βₖ', 'Betti number = rank of the free part'],
-      [`dim ${Hk}ₖ(${fieldName(state.prime)})`, 'Dimension of the homology with coefficients in the prime field (computed independently)'],
+      ['n_k', 'Number of k-simplices = rank Cₖ'],
+      ['rank ∂_k', 'Rank of the boundary map ∂ₖ : Cₖ → Cₖ₋₁ over ℤ'],
+      ['rank Z_k', 'Cycles: rank ker ∂ₖ = nₖ − rank ∂ₖ'],
+      ['rank B_k', 'Boundaries: rank im ∂ₖ₊₁'],
+      [`${Hk}_k(ℤ)`, 'Integral homology: ℤ^βₖ ⊕ torsion from the invariant factors of ∂ₖ₊₁'],
+      ['β_k', 'Betti number = rank of the free part'],
+      [`dim ${Hk}_k(𝔽_{${state.prime}})`, 'Dimension of the homology with coefficients in the prime field (computed independently)'],
     ];
-    for (const [label, title] of cols) head.append(html('th', { title }, label));
+    for (const [label, title] of cols) {
+      const th = html('th', { title });
+      th.append(math(label));
+      head.append(th);
+    }
     const thead = html('thead');
     thead.append(head);
     const tbody = html('tbody');
@@ -660,10 +719,11 @@
         html('td', {}, String(rankD)),
         html('td', {}, String(g.cycles - shift)),
         html('td', {}, String(g.boundaries)),
-        html('td', { class: 'group' + (group.rank === 0 && !group.torsion.length ? ' trivial' : '') }, H.formatGroup(group)),
+        html('td', { class: 'group' + (group.rank === 0 && !group.torsion.length ? ' trivial' : '') }),
         html('td', {}, String(group.rank)),
         html('td', {}, String(f.betti[g.dim] - shift))
       );
+      tr.children[5].append(math(groupNotation(group)));
       tbody.append(tr);
     }
     table.append(thead, tbody);
@@ -679,7 +739,7 @@
     f.generators.forEach((gens, k) => {
       const section = html('div', { class: 'gen-group' });
       const title = html('h3');
-      title.append(`H${sub(k)}(K; ${fieldName(f.p)}) `, html('span', { class: 'muted' }, `dimension ${gens.length}`));
+      title.append(math(`H_${k}(K; 𝔽_{${f.p}})`), ' ', html('span', { class: 'muted' }, `dimension ${gens.length}`));
       section.append(title);
       if (!gens.length) {
         section.append(html('p', { class: 'muted small' }, 'trivial'));
@@ -694,7 +754,7 @@
           let text = H.formatChain(shown);
           if (shown.length < chain.length) text += ` + … (${chain.length} terms)`;
           const li = html('li', { tabindex: 0, class: state.pinned && state.pinned.id === id ? 'pinned' : '' });
-          li.append(html('span', { class: 'gen-name' }, `z${sub(i + 1)}`), html('code', {}, text));
+          li.append(math(`z_{${i + 1}}`, 'math gen-name'), math(text.replace(/,/g, ',\u2009'), 'math chain'));
           li.addEventListener('mouseenter', () => {
             state.hover = keys;
             render();
@@ -733,19 +793,18 @@
       return;
     }
     const { z } = results;
-    box.append(
-      html(
-        'p',
-        { class: 'muted small' },
-        'Rows are (k−1)-simplices, columns are k-simplices; column j holds ∂σⱼ. ' +
-          'The invariant factors are the diagonal of the Smith normal form; those greater than 1 give the torsion of Hₖ₋₁.'
-      )
+    const intro = html('p', { class: 'muted small' });
+    intro.append(
+      'Rows are ', math('(k − 1)'), '-simplices, columns are ', math('k'), '-simplices; column ', math('j'),
+      ' holds ', math('∂σ_j'), '. The invariant factors are the diagonal of the Smith normal form; those greater than 1 give the torsion of ',
+      math('H_{k−1}'), '.'
     );
+    box.append(intro);
     for (let k = 1; k <= z.dimension; k++) {
       const b = z.boundaries[k];
       const section = html('div', { class: 'matrix-block' });
       const title = html('h3');
-      title.append(`∂${sub(k)} : C${sub(k)} → C${sub(k - 1)} `, html('span', { class: 'muted' }, `${b.rows} × ${b.cols}, rank ${b.rank}`));
+      title.append(math(`∂_${k} : C_${k} → C_${k - 1}`), ' ', html('span', { class: 'muted' }, `${b.rows} × ${b.cols}, rank ${b.rank}`));
       section.append(title);
       const counts = new Map();
       for (const d of b.invariants) counts.set(String(d), (counts.get(String(d)) || 0) + 1);
