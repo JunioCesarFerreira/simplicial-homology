@@ -2,6 +2,8 @@
 
 An interactive web application for constructing and visualizing simplicial complexes, computing simplicial homology groups, and exploring topological invariants.
 
+**Try it online: <https://juniocesarferreira.github.io/simplicial-homology/>**
+
 Draw vertices, fill in edges, triangles, tetrahedra or higher simplices, and the homology updates as you edit:
 
 - $H_k(K;\mathbb{Z})$, Betti numbers and torsion included (e.g. $\mathbb{Z} \oplus \mathbb{Z}/2$ for the Klein bottle), and optionally the reduced homology;
@@ -13,13 +15,13 @@ The homology code is a JavaScript port of the Smith normal form method in [go-ho
 
 ## Running
 
-There is no build step and there are no dependencies. Open `index.html` in a browser, or serve the folder:
+The app is published at <https://juniocesarferreira.github.io/simplicial-homology/>. To run it locally: there is no build step and there are no dependencies. Open `index.html` in a browser, or serve the folder:
 
 ```bash
 python3 -m http.server 8000   # then open http://localhost:8000
 ```
 
-The folder can be published as-is on GitHub Pages or any other static host.
+The folder can be published as-is on any static host. The site above is served by GitHub Pages from the root of the `main` branch, so every push to `main` updates it.
 
 ## Using the editor
 
