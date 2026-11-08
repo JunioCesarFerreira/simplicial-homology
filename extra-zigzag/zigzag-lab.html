@@ -1,0 +1,648 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f6f9fb">
+  <title>Zigzag Lab — Homologia persistente interativa</title>
+  <style>
+:root{--ink:#182c40;--muted:#66788a;--line:#dfe8ee;--teal:#0f9389;--amber:#d88c34;--indigo:#6575bd;--paper:#ffffff;--bg:#f6f9fb;--radius:17px;--shadow:0 8px 38px rgba(32,55,80,.035);font-family:Inter,ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;color:var(--ink);background:var(--bg);font-synthesis:none}
+*{box-sizing:border-box}body{margin:0}button,input,select{font:inherit}button{cursor:pointer}button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visible{outline:3px solid #6dc7ba;outline-offset:2px}.app-shell{max-width:1640px;margin:0 auto;padding:26px 36px 18px}.surface{border:1px solid var(--line);border-radius:var(--radius);background:var(--paper);box-shadow:var(--shadow)}.page-head{padding:3px 3px 29px}.brandline{display:flex;gap:9px;align-items:center;margin-bottom:24px}.logo-mark{width:30px;height:30px;display:grid;place-items:center;border-radius:9px;background:#e0f4ee;color:var(--teal);font-size:25px;line-height:1}.brand{letter-spacing:2px;font-size:12px;font-weight:850}.brand b{color:var(--teal)}.version{font-size:10px;color:#7d92a3;padding:3px 7px;border-radius:16px;background:#eaf0f4;margin-left:7px}.head-inner{display:flex;align-items:end;justify-content:space-between;gap:20px}.eyebrow,.section-kicker,.control-label{font-size:10px;font-weight:800;letter-spacing:1.6px;color:#8092a1}.eyebrow{margin-bottom:12px}h1,h2,p{margin:0}h1{font-weight:750;font-size:clamp(27px,3vw,39px);letter-spacing:-1.5px;line-height:1.15}h1 em{font-weight:450;color:var(--teal);font-style:normal}.lede{max-width:730px;margin-top:12px;font-size:14px;line-height:1.65;color:var(--muted)}.head-equation{display:flex;gap:17px;align-items:center;padding:13px 21px;background:#eaf3f5;border:1px solid #dcebed;border-radius:12px;font-family:Georgia,serif;font-size:22px;white-space:nowrap;color:#346074}.eq-arrow{font-family:ui-sans-serif;font-size:25px;color:var(--teal)}sub{font-size:.65em}.toolbar{display:flex;justify-content:space-between;align-items:end;gap:22px;padding:17px 22px;margin-bottom:18px}.tools-left{flex:1;min-width:0}.control-label{margin-bottom:9px}.toolset{display:flex;align-items:center;gap:6px;flex-wrap:wrap}.tool{border:1px solid transparent;background:transparent;border-radius:9px;display:flex;align-items:center;gap:6px;padding:9px 12px;font-size:12px;font-weight:650;color:#5b7081;transition:.12s}.tool:hover{background:#f2f7f7}.tool.active{background:#e5f5f2;color:#087c71;border-color:#bde5de}.tool-icon{font-size:17px;line-height:1;font-weight:700}.danger-tool:hover{background:#fef1f0;color:#b84745}.danger-tool.active{background:#fff0ec;border-color:#f3d1cb;color:#ad5550}.preset-group{flex:0 0 215px}select,input{border:1px solid #d7e1e8;background:#fff;border-radius:9px;color:var(--ink);height:38px;padding:0 12px;font-size:12px}select{cursor:pointer}#presets{width:100%}.workspace-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(350px,385px);gap:18px;align-items:start}.left-pane,.right-pane{padding:22px}.section-heading{display:flex;align-items:center;justify-content:space-between;gap:16px}.section-kicker{margin-bottom:7px}.section-heading h2,.bottom-section h2{font-size:19px;letter-spacing:-.5px}.small-tag{font-size:10px;white-space:nowrap;background:#f1f6f7;border:1px solid #e1e9ed;border-radius:15px;padding:5px 9px;color:#7d8b9b}.complex-strip{display:grid;grid-template-columns:minmax(0,1fr) 23px minmax(0,1fr) 23px minmax(0,1fr);gap:0;align-items:start;margin-top:21px}.complex-card{border:1px solid #e1e8ee;border-radius:12px;min-width:0;background:#fdfefe;overflow:hidden;transition:border .15s}.complex-card.selected{border-color:#8bcec5;box-shadow:0 0 0 2px #e3f6f3}.complex-title{display:flex;justify-content:space-between;align-items:start;padding:15px 13px 11px}.complex-label{font-family:Georgia,serif;font-weight:700;font-size:24px;line-height:1;display:block}.complex-subtitle{display:block;font-size:10px;color:#90a0ac;margin-top:7px}.complex-index{font-size:9px;color:#bdc7d0;font-weight:800}.strip-arrow{text-align:center;color:#83a0aa;padding-top:166px;font-size:25px}.complex-canvas{width:100%;aspect-ratio:300/270;touch-action:none;display:block;background-image:radial-gradient(#e6edf0 .85px,transparent .85px);background-size:16px 16px;cursor:crosshair}.tool-move .complex-canvas{cursor:default}.complex-canvas .vertex{cursor:crosshair;transition:stroke .1s}.tool-move .complex-canvas .vertex{cursor:grab}.complex-canvas .vertex.selected-vertex{stroke:#dd963c;stroke-width:4}.complex-canvas .edge{stroke:#8297a5;stroke-width:3;stroke-linecap:round;cursor:pointer}.complex-canvas .face{fill:#159e90;fill-opacity:.14;stroke:none;cursor:pointer}.complex-canvas .tetrahedron{fill:#7868b7;fill-opacity:.10;stroke:#7868b7;stroke-width:2;stroke-dasharray:6 5;cursor:pointer}.complex-canvas .vertex-label{font-size:13px;fill:#fff;font-weight:750;pointer-events:none;user-select:none}.complex-canvas .tetra-label{fill:#7868b7;font-size:13px;font-weight:750;pointer-events:none}.complex-canvas .empty-canvas-msg{fill:#8ca0ac;font-size:12px;pointer-events:none}.complex-stats{padding:11px 12px;display:flex;gap:5px;flex-wrap:wrap;border-top:1px solid #eef2f4;min-height:49px}.complex-stats span{font-size:10px;background:#f1f5f7;color:#647989;border-radius:6px;padding:6px 7px;font-variant-numeric:tabular-nums}.complex-stats strong{color:#2b5266}.simplex-details{border-top:1px solid #eef2f4}.simplex-details summary{list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;padding:11px 12px;font-size:11px;font-weight:650;color:#637a89}.simplex-details summary::-webkit-details-marker{display:none}.simplex-details summary:before{content:'▸';margin-right:8px;font-size:11px;color:#8fa4b1}.simplex-details[open] summary:before{content:'▾'}.simplex-details summary .counter{margin-left:auto;background:#eef4f6;color:#718593;padding:3px 7px;border-radius:9px;font-size:10px}.simplex-list{max-height:255px;overflow:auto;padding:0 11px 10px}.simplex-group{margin-top:11px}.simplex-group-title{font-size:10px;color:#8294a2;font-weight:750;margin-bottom:6px}.chip-list{display:flex;gap:5px;flex-wrap:wrap}.simplex-chip{background:#f3f7f8;border:1px solid #e2e9ed;border-radius:6px;color:#516879;font-size:10px;padding:5px 6px;display:inline-flex;gap:7px;align-items:center}.simplex-chip button{border:0;background:none;padding:0;color:#a4b3bd;line-height:1}.simplex-chip button:hover{color:#c94d47}.editing-note{display:flex;gap:10px;align-items:flex-start;padding:15px 0 13px;color:#597585;font-size:12px;line-height:1.5}.editing-note>span:first-child{font-size:18px;color:#0c9a91;line-height:1}.simplex-editor{display:flex;gap:18px;justify-content:space-between;align-items:center;background:#f5f9fa;border:1px solid #e4ecee;border-radius:12px;padding:15px}.simplex-help{font-size:11px;color:#7c92a0;line-height:1.55;max-width:280px}.simplex-form{display:flex;align-items:center;gap:7px}.simplex-form select{width:65px;padding:0 7px}.simplex-form input{width:119px}.primary-button{background:#0b8c82;color:#fff;border:none;border-radius:9px;font-size:11px;font-weight:750;padding:0 13px;height:38px;white-space:nowrap}.primary-button:hover{background:#08796f}.meta-row{display:flex;gap:18px;flex-wrap:wrap;margin-top:17px;font-size:11px;color:#8796a1}.meta-row>span{display:flex;align-items:center;gap:7px}.legend-dot{display:inline-block;width:9px;height:9px;border-radius:50%}.vertex-legend{background:#0b9a8e}.triangle-legend{background:#a5e1d8}.tetra-legend{background:#9c8dd1}.legend-line{display:inline-block;width:15px;height:3px;background:#8297a5;border-radius:3px}.panel-intro{font-size:12px;line-height:1.6;color:#81909c;margin:16px 0}.live-indicator{display:flex;align-items:center;gap:6px;color:#0c9486;font-size:10px;font-weight:800;white-space:nowrap}.live-indicator span{background:#39bd9c;border-radius:50%;height:6px;width:6px;box-shadow:0 0 0 3px #e1f7eb}.barcode-cards{display:flex;flex-direction:column;gap:13px}.barcode-card{border:1px solid #e5eaef;border-radius:12px;padding:15px 15px 12px;min-width:0}.barcode-card-head{display:flex;align-items:center;justify-content:space-between;gap:8px}.barcode-title{font-family:Georgia,serif;font-size:23px;font-weight:700}.barcode-desc{font-size:10px;color:#8a99a5;margin-top:4px}.barcode-count{font-size:10px;border:1px solid #e3eaf0;padding:5px 8px;border-radius:7px;color:#6d8090;font-weight:750}.barcode-svg{width:100%;display:block;margin:12px 0 2px}.rank-summary{font-size:10px;color:#8493a1;border-top:1px solid #eff3f5;padding-top:10px;margin-top:5px;display:flex;gap:12px;flex-wrap:wrap}.rank-summary strong{color:#557284;font-variant-numeric:tabular-nums}.barcode-legend{display:flex;gap:15px;flex-wrap:wrap;padding:15px 4px;color:#91a1ab;font-size:10px}.barcode-legend span{display:flex;align-items:center;gap:7px}.line-sample{display:inline-block;height:3px;width:17px;background:#0b9a8e;border-radius:3px}.point-sample{display:inline-block;height:7px;width:7px;border-radius:50%;background:#d88c34}.formula-box{background:#f5f9fa;border-radius:10px;padding:15px;margin-top:2px}.formula{display:flex;flex-direction:column;gap:8px;font-family:Georgia,serif;font-size:12px;color:#465d70;line-height:1.7;overflow-wrap:anywhere}.formula .dim-symbol{font-weight:750;color:#24465b}.formula .zero-label{color:#a4b0ba}.bottom-section{display:grid;grid-template-columns:1fr minmax(240px,325px);gap:30px;padding:21px 24px;margin-top:18px}.bottom-section p{color:#728695;font-size:12px;line-height:1.8;margin-top:10px;max-width:840px}.important-note{background:#eef7f4;padding:18px;border-radius:12px;border:1px solid #dcece7}.important-note strong{color:#227f72;font-size:12px}.important-note p{margin-top:8px;font-size:11px;color:#648b86}.site-footer{display:flex;justify-content:space-between;gap:16px;align-items:center;padding:20px 4px;color:#8a9da8;font-size:11px}.footer-actions{display:flex;gap:15px;align-items:center;flex-wrap:wrap}.link-button{border:0;background:none;color:#418579;font-weight:650;font-size:11px;padding:4px 0}.link-button:hover{text-decoration:underline}.toast{position:fixed;bottom:20px;left:50%;transform:translate(-50%,15px);background:#203e50;color:#fff;padding:11px 17px;border-radius:10px;box-shadow:0 10px 35px #13263322;font-size:12px;opacity:0;pointer-events:none;transition:.16s;max-width:min(85vw,650px);z-index:40}.toast.visible{opacity:1;transform:translate(-50%,0)}.toast.error{background:#a83d40}.sr-only{position:absolute;left:-10000px;width:1px;height:1px;overflow:hidden}@media(max-width:1260px){.workspace-grid{grid-template-columns:1fr}.right-pane{display:block}.barcode-cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr))}.left-pane{min-width:0}.barcode-card{padding:12px}.formula-box{margin-top:12px}.complex-canvas{max-height:295px}}@media(max-width:780px){.app-shell{padding:14px}.toolbar{flex-direction:column;align-items:stretch}.preset-group{flex:initial}.head-inner{flex-direction:column;align-items:start}.head-equation{font-size:17px}.complex-strip{grid-template-columns:1fr;gap:10px}.complex-card{max-width:480px;width:100%;margin:auto}.strip-arrow{padding:0;line-height:1;text-align:center;transform:rotate(90deg)}.complex-canvas{max-height:310px}.barcode-cards{grid-template-columns:1fr}.simplex-editor,.bottom-section{display:flex;flex-direction:column;align-items:stretch}.simplex-form{flex-wrap:wrap}.bottom-section{gap:15px}.site-footer{flex-direction:column;align-items:start}}
+
+</style>
+</head>
+<body>
+<div class="app-shell">
+  <header class="page-head">
+    <div class="brandline"><span class="logo-mark" aria-hidden="true">⌁</span><span class="brand">ZIGZAG <b>LAB</b></span><span class="version">v1.0</span></div>
+    <div class="head-inner">
+      <div>
+        <div class="eyebrow">LABORATÓRIO INTERATIVO · TOPOLOGIA ALGÉBRICA</div>
+        <h1>Homologia persistente <em>zigzag</em></h1>
+        <p class="lede">Desenhe e modifique complexos simpliciais. Observe como as classes de homologia evoluem entre inclusões e se decompõem em intervalos.</p>
+      </div>
+      <div class="head-equation" aria-label="K zero contido em K um contendo K dois"><span>K<sub>0</sub></span><span class="eq-arrow">→</span><span>K<sub>1</sub></span><span class="eq-arrow">←</span><span>K<sub>2</sub></span></div>
+    </div>
+  </header>
+
+  <section class="toolbar surface" aria-label="Ferramentas de edição">
+    <div class="tools-left">
+      <div class="control-label">FERRAMENTA</div>
+      <div class="toolset" role="group" aria-label="Escolha uma ferramenta">
+        <button class="tool active" data-tool="move" title="Arraste vértices para mudar as posições"><span class="tool-icon">↗</span>Mover</button>
+        <button class="tool" data-tool="vertex" title="Clique no espaço vazio para adicionar um vértice"><span class="tool-icon">⊕</span>Vértice</button>
+        <button class="tool" data-tool="edge" title="Selecione 2 vértices"><span class="tool-icon">╱</span>Aresta</button>
+        <button class="tool" data-tool="triangle" title="Selecione 3 vértices"><span class="tool-icon">△</span>Face</button>
+        <button class="tool" data-tool="tetra" title="Selecione 4 vértices para criar um 3-simplexo"><span class="tool-icon">◇</span>Tetraedro</button>
+        <button class="tool danger-tool" data-tool="erase" title="Clique em um simplexo para removê-lo e remover suas cofaces"><span class="tool-icon">⌫</span>Apagar</button>
+      </div>
+    </div>
+    <div class="preset-group">
+      <label for="presets" class="control-label">EXEMPLO</label>
+      <select id="presets" aria-label="Selecione um exemplo">
+        <option value="conversation">Exemplo da conversa</option>
+        <option value="sphere">H₂ — esfera persistente</option>
+        <option value="filled">H₂ — esfera preenchida</option>
+        <option value="initial">Exemplo anterior (H₁)</option>
+        <option value="empty">Começar do zero</option>
+      </select>
+    </div>
+  </section>
+
+  <div class="workspace-grid">
+    <main class="surface left-pane">
+      <div class="section-heading"><div><div class="section-kicker">01 / CONSTRUÇÃO</div><h2>Complexos simpliciais</h2></div><span class="small-tag">Edição interativa</span></div>
+      <div class="complex-strip">
+        <article class="complex-card selected" data-complex-panel="0">
+          <div class="complex-title"><div><span class="complex-label">K<sub>0</sub></span><span class="complex-subtitle">Origem à esquerda</span></div><span class="complex-index">00</span></div>
+          <svg class="complex-canvas" data-index="0" viewBox="0 0 300 270" role="img" aria-label="Complexo simplicial K0 editável"></svg>
+          <div class="complex-stats" id="stats-0"></div>
+          <details class="simplex-details" id="details-0"><summary>Simplexos <span class="counter" id="count-0"></span></summary><div id="simplices-0" class="simplex-list"></div></details>
+        </article>
+        <div class="strip-arrow" aria-hidden="true">→</div>
+        <article class="complex-card" data-complex-panel="1">
+          <div class="complex-title"><div><span class="complex-label">K<sub>1</sub></span><span class="complex-subtitle">Complexo central</span></div><span class="complex-index">01</span></div>
+          <svg class="complex-canvas" data-index="1" viewBox="0 0 300 270" role="img" aria-label="Complexo simplicial K1 editável"></svg>
+          <div class="complex-stats" id="stats-1"></div>
+          <details class="simplex-details" id="details-1"><summary>Simplexos <span class="counter" id="count-1"></span></summary><div id="simplices-1" class="simplex-list"></div></details>
+        </article>
+        <div class="strip-arrow" aria-hidden="true">←</div>
+        <article class="complex-card" data-complex-panel="2">
+          <div class="complex-title"><div><span class="complex-label">K<sub>2</sub></span><span class="complex-subtitle">Origem à direita</span></div><span class="complex-index">02</span></div>
+          <svg class="complex-canvas" data-index="2" viewBox="0 0 300 270" role="img" aria-label="Complexo simplicial K2 editável"></svg>
+          <div class="complex-stats" id="stats-2"></div>
+          <details class="simplex-details" id="details-2"><summary>Simplexos <span class="counter" id="count-2"></span></summary><div id="simplices-2" class="simplex-list"></div></details>
+        </article>
+      </div>
+      <div class="editing-note"><span aria-hidden="true">ⓘ</span><span id="tool-hint">Arraste os vértices para alterar suas posições. Clique em um painel para selecioná-lo.</span></div>
+      <div class="simplex-editor">
+        <div><div class="control-label">EDIÇÃO POR SIMPLEXO</div><div class="simplex-help">Adicione vértices, arestas, triângulos ou tetraedros por identificadores.</div></div>
+        <form id="simplex-form" class="simplex-form"><label class="sr-only" for="target-complex">Complexo</label><select id="target-complex"><option value="0">K₀</option><option value="1">K₁</option><option value="2">K₂</option></select><label class="sr-only" for="simplex-input">Vértices do simplexo</label><input id="simplex-input" placeholder="Ex.: 0,1,2" autocomplete="off"><button type="submit" class="primary-button">+ Adicionar</button></form>
+      </div>
+      <div class="meta-row"><span><span class="legend-dot vertex-legend"></span>Vértice</span><span><span class="legend-line"></span>Aresta</span><span><span class="legend-dot triangle-legend"></span>2-simplexo</span><span><span class="legend-dot tetra-legend"></span>3-simplexo</span></div>
+    </main>
+
+    <aside class="surface right-pane">
+      <div class="section-heading"><div><div class="section-kicker">02 / RESULTADO</div><h2>Barcodes</h2></div><span class="live-indicator"><span></span>Em tempo real</span></div>
+      <p class="panel-intro">Decomposição em módulos de intervalo, usando coeficientes em <strong>𝔽₂</strong>.</p>
+      <div id="barcode-cards" class="barcode-cards" aria-live="polite"></div>
+      <div class="barcode-legend"><span><span class="line-sample"></span>Intervalo com mais de uma posição</span><span><span class="point-sample"></span>Intervalo pontual</span></div>
+      <div class="formula-box"><div class="control-label">DECOMPOSIÇÃO</div><div class="formula" id="decomposition">—</div></div>
+    </aside>
+  </div>
+
+  <section class="bottom-section surface">
+    <div><div class="section-kicker">03 / FUNDAMENTO</div><h2>O que está sendo calculado?</h2><p>Para cada <em>k</em> = 0, 1, 2, calculamos <strong>H<sub>k</sub>(K) = ker ∂<sub>k</sub> / im ∂<sub>k+1</sub></strong> sobre 𝔽₂. As inclusões induzem as aplicações lineares <strong>H<sub>k</sub>(K₀) → H<sub>k</sub>(K₁) ← H<sub>k</sub>(K₂)</strong>. A decomposição depende dos postos dessas aplicações e da interseção entre suas imagens — não apenas dos números de Betti.</p></div>
+    <div class="important-note"><strong>Para calcular H₂ corretamente</strong><p>São aceitos 3-simplexos (tetraedros preenchidos), pois classes de dimensão 2 podem ser anuladas pela imagem de ∂₃. O desenho é uma projeção 2D de um complexo abstrato.</p></div>
+  </section>
+
+  <footer class="site-footer"><span>Homologia simplicial + persistência zigzag · computação exata em 𝔽₂</span><div class="footer-actions"><button id="export-json" class="link-button">Exportar JSON</button><button id="import-json" class="link-button">Importar JSON</button><input type="file" id="import-file" accept="application/json,.json" hidden><button id="reset-view" class="link-button">Restaurar exemplo</button></div></footer>
+  <div class="toast" role="status" id="toast"></div>
+</div>
+<script>
+/**
+ * Zigzag persistent homology for K0 -> K1 <- K2 over F2.
+ * Finite simplicial complexes, including 3-simplices, so H2 is computed
+ * as ker(boundary_2) / image(boundary_3).
+ * No external libraries required.
+ */
+
+const MAX_VERTICES = 12;
+
+function sortedSimplex(values) {
+  const a = [...new Set(values.map(Number))].sort((x, y) => x - y);
+  if (!a.length || a.length > 4 || a.some(x => !Number.isSafeInteger(x) || x < 0)) {
+    throw Error('Um simplexo deve conter entre 1 e 4 identificadores inteiros não negativos distintos.');
+  }
+  return a;
+}
+const simplexKey = a => sortedSimplex(a).join(',');
+const parseKey = key => key.split(',').map(Number);
+
+function simplexClosure(simplex) {
+  const a = sortedSimplex(simplex), faces = [];
+  for (let mask = 1; mask < (1 << a.length); mask++) {
+    const face = a.filter((_, j) => (mask & (1 << j)) !== 0);
+    faces.push(face.join(','));
+  }
+  return faces;
+}
+
+const pivot = n => n.toString(2).length - 1;
+
+/** Incremental Gaussian elimination with optional F2 labels (BigInt bit vectors). */
+function insertReduced(table, vector, label = 0n) {
+  let v = vector, l = label;
+  while (v !== 0n) {
+    const p = pivot(v);
+    const old = table.get(p);
+    if (old) { v ^= old.vector; l ^= old.label; }
+    else { table.set(p, { vector: v, label: l }); return true; }
+  }
+  return false;
+}
+
+function reduceWithLabels(table, vector) {
+  let v = vector, label = 0n;
+  while (v !== 0n) {
+    const old = table.get(pivot(v));
+    if (!old) return { remainder: v, label };
+    v ^= old.vector;
+    label ^= old.label;
+  }
+  return { remainder: 0n, label };
+}
+
+function bit(j) { return 1n << BigInt(j); }
+
+function simplicesInDimension(complex, k) {
+  return [...complex].filter(key => parseKey(key).length === k + 1)
+    .sort((a, b) => {
+      const x = parseKey(a), y = parseKey(b);
+      for (let i = 0; i < x.length; i++) if (x[i] !== y[i]) return x[i] - y[i];
+      return 0;
+    });
+}
+
+function boundaryColumns(domain, codomain) {
+  const index = new Map(codomain.map((key, i) => [key, i]));
+  return domain.map(key => {
+    const s = parseKey(key);
+    if (s.length === 1) return 0n;
+    let col = 0n;
+    for (let i = 0; i < s.length; i++) {
+      const face = s.filter((_, j) => i !== j).join(',');
+      const row = index.get(face);
+      if (row === undefined) throw Error(`Complexo não fechado: falta a face ${face}.`);
+      col ^= bit(row); // F2: orientations do not affect the coefficient.
+    }
+    return col;
+  });
+}
+
+function nullspace(columns) {
+  const table = new Map(), generators = [];
+  columns.forEach((column, j) => {
+    let v = column, label = bit(j);
+    while (v !== 0n) {
+      const p = pivot(v), old = table.get(p);
+      if (old) { v ^= old.vector; label ^= old.label; }
+      else { table.set(p, { vector: v, label }); break; }
+    }
+    if (v === 0n) generators.push(label);
+  });
+  return generators;
+}
+
+/** Homology data and explicit representative cycles for dimension k. */
+function homologyOf(complex, k) {
+  if (!Number.isInteger(k) || k < 0 || k > 2) throw Error('Apenas H0, H1 e H2 são suportados.');
+  const cm1 = k ? simplicesInDimension(complex, k - 1) : [];
+  const ck = simplicesInDimension(complex, k);
+  const cp1 = simplicesInDimension(complex, k + 1);
+  const dK = boundaryColumns(ck, cm1);
+  const dK1 = boundaryColumns(cp1, ck);
+  const cycles = nullspace(dK);
+  const table = new Map();
+  dK1.forEach(vector => insertReduced(table, vector, 0n));
+  const imageRank = table.size;
+  const representatives = [];
+  for (const cycle of cycles) {
+    const reduced = reduceWithLabels(table, cycle);
+    if (reduced.remainder !== 0n) {
+      const label = bit(representatives.length);
+      // Include the full homology coordinate of this reducer.
+      insertReduced(table, cycle, label);
+      representatives.push(cycle);
+    }
+  }
+  return {
+    k, basis: ck, representatives, betti: representatives.length,
+    imageRank, cycleRank: cycles.length,
+    classCoordinates(vector) {
+      const out = reduceWithLabels(table, vector);
+      if (out.remainder !== 0n) throw Error('Um ciclo não pôde ser expresso na base de homologia.');
+      return out.label;
+    }
+  };
+}
+
+function mapClasses(domain, target) {
+  const index = new Map(target.basis.map((key, i) => [key, i]));
+  return domain.representatives.map(representative => {
+    let mapped = 0n;
+    domain.basis.forEach((key, j) => {
+      if ((representative & bit(j)) !== 0n) {
+        const t = index.get(key);
+        if (t === undefined) throw Error(`Inclusão inválida: ${key} não existe no complexo central.`);
+        mapped ^= bit(t);
+      }
+    });
+    return target.classCoordinates(mapped);
+  });
+}
+
+function rankOf(columns) {
+  const table = new Map();
+  for (const c of columns) insertReduced(table, c);
+  return table.size;
+}
+
+function analyzeZigzag(complexes) {
+  if (!Array.isArray(complexes) || complexes.length !== 3) throw Error('São necessários três complexos.');
+  for (const end of [0, 2]) {
+    for (const simplex of complexes[end]) {
+      if (!complexes[1].has(simplex)) throw Error(`Inclusão inválida: ${simplex} pertence a K${end}, mas não a K1.`);
+    }
+  }
+  const result = [];
+  for (let k = 0; k <= 2; k++) {
+    const [a, b, c] = complexes.map(s => homologyOf(s, k));
+    const f = mapClasses(a, b), g = mapClasses(c, b);
+    const rf = rankOf(f), rg = rankOf(g), rfg = rankOf([...f, ...g]);
+    const overlap = rf + rg - rfg;
+    const mult = {
+      '0,0': a.betti - rf,
+      '0,1': rf - overlap,
+      '0,2': overlap,
+      '1,1': b.betti - rfg,
+      '1,2': rg - overlap,
+      '2,2': c.betti - rg
+    };
+    if (Object.values(mult).some(n => n < 0)) throw Error('Multiplicidade negativa: erro interno no cálculo.');
+    const intervals = [];
+    for (const [name, count] of Object.entries(mult)) {
+      const [start, end] = name.split(',').map(Number);
+      for (let i = 0; i < count; i++) intervals.push({ start, end });
+    }
+    intervals.sort((x, y) => x.start - y.start || y.end - x.end);
+    result.push({
+      k, betti: [a.betti, b.betti, c.betti],
+      rankF: rf, rankG: rg, overlap, intervals, multiplicities: mult,
+      matrices: {f: f.map(String), g: g.map(String)}
+    });
+  }
+  return result;
+}
+
+
+const SVG_NS = 'http://www.w3.org/2000/svg';
+const COLORS = ['#0f9389', '#d88c34', '#6575bd'];
+const TOOL_SIZES = {edge:2,triangle:3,tetra:4};
+const TOOL_LABEL = {edge:'aresta',triangle:'face triangular',tetra:'tetraedro'};
+let state = { vertices:[], complexes:[new Set(),new Set(),new Set()], tool:'move', selectedPanel:0, pending:[], pendingPanel:null, drag:null };
+let toastTimeout;
+
+const $ = selector => document.querySelector(selector);
+const $$ = selector => [...document.querySelectorAll(selector)];
+const cleanId = id => String(id).replace(/[^\d]/g, '');
+function svgElement(tag, attrs = {}, text = null) {
+  const el = document.createElementNS(SVG_NS,tag);
+  for (const [k,v] of Object.entries(attrs)) if (v !== null && v !== undefined) el.setAttribute(k,v);
+  if (text !== null) el.textContent=text;
+  return el;
+}
+function toast(message, error=false) {
+  const box = $('#toast'); box.textContent=message;
+  box.classList.toggle('error',error);box.classList.add('visible');
+  clearTimeout(toastTimeout);toastTimeout=setTimeout(()=>box.classList.remove('visible'),3400);
+}
+function byId(id) {return state.vertices.find(v=>v.id===id);}
+function present(panel,id) {return state.complexes[panel].has(String(id));}
+function allFaces(complex,index) {return [...complex].filter(k=>parseKey(k).length===index+1).sort((a,b)=>a.localeCompare(b,undefined,{numeric:true}));}
+function isSuperset(key,face) {
+  const values = new Set(parseKey(key));
+  return face.every(id=>values.has(id));
+}
+function nextVertexId(){ let id=0; while(byId(id))id++; return id; }
+function insertSimplex(panel,simplex) {
+  const faces=simplexClosure(simplex);
+  for(const k of faces) state.complexes[panel].add(k);
+  if(panel!==1)for(const k of faces)state.complexes[1].add(k);
+}
+function deleteSimplex(panel,simplex) {
+  const face=sortedSimplex(simplex);
+  const panels=panel===1?[0,1,2]:[panel];
+  for(const p of panels) for(const key of [...state.complexes[p]]) {
+    if(isSuperset(key,face)) state.complexes[p].delete(key);
+  }
+  // Remover vértices que não pertencem mais a nenhum complexo.
+  const activeIds = new Set(state.complexes.flatMap(c => [...c]).filter(k => !k.includes(',')).map(Number));
+  state.vertices = state.vertices.filter(v => activeIds.has(v.id));
+  state.pending=[];
+  updateAll();
+}
+function positionFor(id) {
+  const n=state.vertices.length;
+  const angle=-Math.PI/2+(n/Math.max(n+1,5))*Math.PI*2;
+  return {id,x:150+88*Math.cos(angle),y:143+88*Math.sin(angle)};
+}
+function ensureVertices(ids) {
+  for(const id of ids) if(!byId(id)) {
+    if(state.vertices.length>=MAX_VERTICES)throw Error(`Máximo de ${MAX_VERTICES} vértices na versão interativa.`);
+    state.vertices.push(positionFor(id));
+  }
+}
+function addSimplex(panel,simplex) {
+  const s=sortedSimplex(simplex);
+  ensureVertices(s);
+  insertSimplex(panel,s);
+  state.pending=[];
+  updateAll();
+}
+function initialVertices() {
+  return [
+    {id:0,x:84,y:122},
+    {id:1,x:194,y:122},
+    {id:2,x:139,y:218},
+    {id:3,x:255,y:231},
+    {id:4,x:139,y:29}
+  ];
+}
+function preset(name) {
+  state.vertices=[];state.complexes=[new Set(),new Set(),new Set()];
+  state.pending=[];state.pendingPanel=null;state.drag=null;
+  if(name==='conversation') {
+    state.vertices=initialVertices();
+    [[0,1],[0,2],[1,2],[3]].forEach(s=>insertSimplex(0,s));
+    [[0,1,2],[2,3],[0,4],[1,4]].forEach(s=>insertSimplex(1,s));
+    [[0,1],[0,2],[1,2],[0,4],[1,4]].forEach(s=>insertSimplex(2,s));
+  } else if(name==='initial') {
+    state.vertices=initialVertices();
+    [[0,1],[2],[3]].forEach(s=>insertSimplex(0,s));
+    [[0,1],[0,2],[1,2],[2,3],[0,4]].forEach(s=>insertSimplex(1,s));
+    [[0,2],[2,3],[0,4]].forEach(s=>insertSimplex(2,s));
+  } else if(name==='sphere'||name==='filled') {
+    state.vertices=[
+      {id:0,x:78,y:159},{id:1,x:222,y:159},
+      {id:2,x:150,y:236},{id:3,x:150,y:43}
+    ];
+    const boundary=[[0,1,2],[0,1,3],[0,2,3],[1,2,3]];
+    for(const p of [0,1,2])for(const s of boundary)insertSimplex(p,s);
+    if(name==='filled')insertSimplex(1,[0,1,2,3]);
+  } else if(name!=='empty')throw Error('Exemplo desconhecido.');
+  updateAll();
+}
+function choosePanel(panel) {
+  state.selectedPanel=panel;
+  state.pending=[];state.pendingPanel=panel;
+  $('#target-complex').value=String(panel);
+  $$('.complex-card').forEach((el,i)=>el.classList.toggle('selected',i===panel));
+  toolHint();
+}
+function selectTool(tool) {
+  state.tool=tool;state.pending=[];state.pendingPanel=null;
+  $$('.tool').forEach(el=>el.classList.toggle('active',el.dataset.tool===tool));
+  document.body.classList.toggle('tool-move',tool==='move');
+  renderDrawings();toolHint();
+}
+function toolHint() {
+  let text={
+    move:'Arraste os vértices para mudar sua posição nos três complexos. Clique em um painel para selecioná-lo.',
+    vertex:'Clique em uma área vazia para adicionar um vértice. Em K₀ ou K₂, ele também será criado em K₁.',
+    edge:'Selecione dois vértices para criar uma aresta. As faces necessárias são adicionadas automaticamente.',
+    triangle:'Selecione três vértices para criar um 2-simplexo (face preenchida). Arestas e vértices são incluídos automaticamente.',
+    tetra:'Selecione quatro vértices para criar um 3-simplexo. Suas quatro faces triangulares são incluídas automaticamente.',
+    erase:'Clique em um vértice, aresta, face ou tetraedro para apagar também suas cofaces. Em K₁, a exclusão propaga-se a K₀ e K₂.'
+  }[state.tool];
+  if(state.pending.length)text=`${state.pending.length} de ${TOOL_SIZES[state.tool]} vértices selecionados em K${state.pendingPanel}. Selecione os restantes ou clique novamente para desmarcar.`;
+  $('#tool-hint').textContent=text;
+}
+function mousePoint(svg,event) {
+  const p=svg.createSVGPoint();p.x=event.clientX;p.y=event.clientY;
+  const m=svg.getScreenCTM();
+  const out=m?p.matrixTransform(m.inverse()):{x:150,y:135};
+  return {x:Math.max(18,Math.min(282,out.x)),y:Math.max(18,Math.min(252,out.y))};
+}
+function selectVertex(panel,id) {
+  if(state.pendingPanel!==panel){state.pending=[];state.pendingPanel=panel;}
+  if(state.pending.includes(id))state.pending=state.pending.filter(x=>x!==id);
+  else state.pending.push(id);
+  if(state.pending.length===TOOL_SIZES[state.tool]){
+    addSimplex(panel,state.pending);
+    toast(`${TOOL_LABEL[state.tool][0].toUpperCase()+TOOL_LABEL[state.tool].slice(1)} adicionado(a) a K${panel}.`);
+  }else {renderDrawings();toolHint();}
+}
+function handlePointerDown(event) {
+  if(event.button!==0 && event.pointerType!=='touch')return;
+  const svg=event.currentTarget, panel=Number(svg.dataset.index);
+  if(state.selectedPanel!==panel) choosePanel(panel);
+  const vert=event.target.closest('[data-vertex-id]');
+  const simplex=event.target.closest('[data-simplex-key]');
+  if(state.tool==='move') {
+    if(!vert)return;
+    const id=Number(vert.dataset.vertexId);
+    const here=mousePoint(svg,event), v=byId(id);
+    state.drag={svg,id,dx:v.x-here.x,dy:v.y-here.y};
+    try{svg.setPointerCapture(event.pointerId);}catch{}
+    event.preventDefault();return;
+  }
+  if(state.tool==='erase') {
+    if(vert) deleteSimplex(panel,[Number(vert.dataset.vertexId)]);
+    else if(simplex)deleteSimplex(panel,parseKey(simplex.dataset.simplexKey));
+    else toast('Clique em um simplexo para removê-lo.');
+    event.preventDefault();return;
+  }
+  if(state.tool==='vertex'){
+    if(vert)return;
+    const p=mousePoint(svg,event), id=nextVertexId();
+    if(state.vertices.length>=MAX_VERTICES){toast(`Limite de ${MAX_VERTICES} vértices atingido.`,true);return;}
+    state.vertices.push({id,x:p.x,y:p.y});insertSimplex(panel,[id]);
+    updateAll();event.preventDefault();return;
+  }
+  if(TOOL_SIZES[state.tool] && vert){selectVertex(panel,Number(vert.dataset.vertexId));event.preventDefault();}
+}
+function handlePointerMove(event) {
+  if(!state.drag||state.drag.svg!==event.currentTarget)return;
+  const p=mousePoint(event.currentTarget,event),v=byId(state.drag.id);
+  if(!v)return;
+  v.x=Math.max(18,Math.min(282,p.x+state.drag.dx));
+  v.y=Math.max(18,Math.min(252,p.y+state.drag.dy));
+  renderDrawings();
+}
+function handlePointerUp(event) {
+  if(state.drag&&state.drag.svg===event.currentTarget)state.drag=null;
+}
+function pathFor(points) {return points.map(p=>`${p.x},${p.y}`).join(' ');}
+function convexHull(points) {
+  const arr=[...points].sort((a,b)=>a.x-b.x||a.y-b.y);
+  const cross=(o,a,b)=>(a.x-o.x)*(b.y-o.y)-(a.y-o.y)*(b.x-o.x);
+  const lower=[];for(const p of arr){while(lower.length>1&&cross(lower.at(-2),lower.at(-1),p)<=0)lower.pop();lower.push(p);}
+  const upper=[];for(const p of arr.slice().reverse()){while(upper.length>1&&cross(upper.at(-2),upper.at(-1),p)<=0)upper.pop();upper.push(p);}
+  lower.pop();upper.pop();return [...lower,...upper];
+}
+function renderDrawings() {
+  for(let panel=0;panel<3;panel++){
+    const svg=$(`svg[data-index="${panel}"]`),c=state.complexes[panel];
+    svg.replaceChildren();
+    const badges=[];
+    const dim3=allFaces(c,3);
+    for(const key of dim3){
+      const vertices=parseKey(key).map(byId).filter(Boolean);
+      if(vertices.length!==4)continue;
+      const hull=convexHull(vertices);
+      const polygon=svgElement('polygon',{points:pathFor(hull),class:'tetrahedron','data-simplex-key':key});svg.append(polygon);
+      const mx=vertices.reduce((s,v)=>s+v.x,0)/4,my=vertices.reduce((s,v)=>s+v.y,0)/4;
+      badges.push({mx,my,key});
+    }
+    for(const key of allFaces(c,2)){
+      const vertices=parseKey(key).map(byId).filter(Boolean);
+      if(vertices.length!==3)continue;
+      svg.append(svgElement('polygon',{points:pathFor(vertices),class:'face','data-simplex-key':key}));
+    }
+    for(const key of allFaces(c,1)){
+      const vertices=parseKey(key).map(byId).filter(Boolean);
+      if(vertices.length!==2)continue;
+      const [a,b]=vertices;
+      svg.append(svgElement('line',{x1:a.x,y1:a.y,x2:b.x,y2:b.y,class:'edge','data-simplex-key':key}));
+    }
+    for(const {mx,my,key} of badges){
+      svg.append(svgElement('rect',{x:mx-10,y:my-11,width:20,height:20,rx:6,fill:'#eeeaf8',stroke:'#b3a9dc','data-simplex-key':key}));
+      svg.append(svgElement('text',{x:mx,y:my+3,'text-anchor':'middle',class:'tetra-label'},'3'));
+    }
+    const ids=allFaces(c,0).map(key=>Number(key));
+    if(!ids.length)svg.append(svgElement('text',{x:150,y:135,'text-anchor':'middle',class:'empty-canvas-msg'},'Clique para adicionar vértices'));
+    for(const id of ids){
+      const v=byId(id);if(!v)continue;
+      const selected=state.pendingPanel===panel&&state.pending.includes(id);
+      const circle=svgElement('circle',{cx:v.x,cy:v.y,r:12.8,fill:'#0f9389',stroke:'#fff','stroke-width':2,class:`vertex${selected?' selected-vertex':''}`,'data-vertex-id':id});
+      svg.append(circle);
+      svg.append(svgElement('text',{x:v.x,y:v.y+4.2,'text-anchor':'middle',class:'vertex-label'},String(id)));
+    }
+  }
+}
+function renderComplexMeta(results) {
+  for(let i=0;i<3;i++){
+    $('#stats-'+i).innerHTML=results.map(h=>`<span>β<sub>${h.k}</sub> <strong>${h.betti[i]}</strong></span>`).join('');
+    const groups=[];
+    for(let k=0;k<=3;k++){
+      const simplices=allFaces(state.complexes[i],k);
+      if(!simplices.length)continue;
+      const chips=simplices.map(key=>`<span class="simplex-chip"><span>[${key}]</span><button title="Remover [${key}] de K${i}" aria-label="Remover simplexo [${key}] do complexo K${i}" type="button" data-remove-panel="${i}" data-remove-simplex="${key}">×</button></span>`).join('');
+      groups.push(`<div class="simplex-group"><div class="simplex-group-title">${k}-simplexos (${simplices.length})</div><div class="chip-list">${chips}</div></div>`);
+    }
+    const count=state.complexes[i].size;
+    $('#count-'+i).textContent=count;
+    $('#simplices-'+i).innerHTML=groups.join('')||'<span class="simplex-group-title">Nenhum simplexo</span>';
+  }
+}
+function subscript(n){return String(n).replace(/0/g,'₀').replace(/1/g,'₁').replace(/2/g,'₂');}
+function drawBarcode(h){
+  const width=320, positions=[80,192,304], padTop=28,rowH=26;
+  const height=padTop+Math.max(h.intervals.length,1)*rowH+20;
+  const svg=svgElement('svg',{class:'barcode-svg',viewBox:`0 0 ${width} ${height}`,role:'img','aria-label':`Barcode H${h.k}: ${h.intervals.map(i=>`[${i.start},${i.end}]`).join(', ')||'vazio'}`});
+  for(let i=0;i<3;i++){
+    svg.append(svgElement('line',{x1:positions[i],y1:14,x2:positions[i],y2:height-22,stroke:'#dbe5eb','stroke-width':1,'stroke-dasharray':'3 5'}));
+    svg.append(svgElement('text',{x:positions[i],y:height-5,'text-anchor':'middle',fill:'#8192a1','font-size':11},`K${subscript(i)}`));
+  }
+  h.intervals.forEach((interval,j)=>{
+    const y=padTop+j*rowH, color=COLORS[h.k];
+    svg.append(svgElement('text',{x:8,y:y+4,'font-size':11,'font-family':'Georgia,serif',fill:'#708593'},`[${interval.start},${interval.end}]`));
+    if(interval.start===interval.end)svg.append(svgElement('circle',{cx:positions[interval.start],cy:y,r:5.2,fill:color}));
+    else svg.append(svgElement('line',{x1:positions[interval.start],y1:y,x2:positions[interval.end],y2:y,stroke:color,'stroke-width':5,'stroke-linecap':'round'}));
+  });
+  if(!h.intervals.length)svg.append(svgElement('text',{x:192,y:padTop+4,fill:'#9aaab5','font-size':12,'text-anchor':'middle'},'Nenhuma classe de homologia'));
+  return svg;
+}
+function renderBarcodes(results){
+  const names=['Componentes conexas','Ciclos independentes','Cavidades bidimensionais'];
+  const target=$('#barcode-cards');target.replaceChildren();
+  for(const h of results){
+    const card=document.createElement('div');card.className='barcode-card';
+    card.innerHTML=`<div class="barcode-card-head"><div><div class="barcode-title">H<sub>${h.k}</sub></div><div class="barcode-desc">${names[h.k]}</div></div><span class="barcode-count">${h.intervals.length} ${h.intervals.length===1?'intervalo':'intervalos'}</span></div>`;
+    card.append(drawBarcode(h));
+    const ranks=document.createElement('div');ranks.className='rank-summary';
+    ranks.innerHTML=`<span>β = <strong>(${h.betti.join(', ')})</strong></span><span>posto(f) = <strong>${h.rankF}</strong></span><span>posto(g) = <strong>${h.rankG}</strong></span><span>interseção = <strong>${h.overlap}</strong></span>`;
+    card.append(ranks);target.append(card);
+  }
+  $('#decomposition').innerHTML=results.map(h=>{
+    const terms=[];
+    for(const i of h.intervals){const term=`I[${i.start},${i.end}]`; if(terms.length && terms.at(-1).name===term)terms.at(-1).count++;else terms.push({name:term,count:1});}
+    return `<div><span class="dim-symbol">H${subscript(h.k)}</span> ≅ ${terms.length?terms.map(t=>`${t.count>1?t.count+'·':''}${t.name}`).join(' ⊕ '):'<span class="zero-label">0</span>'}</div>`;
+  }).join('');
+}
+function updateAll(){
+  try{
+    const results=analyzeZigzag(state.complexes);
+    renderDrawings();renderComplexMeta(results);renderBarcodes(results);
+  }catch(err){console.error(err);toast(err.message,true);}
+  toolHint();
+}
+function handleSimplexForm(e){
+  e.preventDefault();
+  const panel=Number($('#target-complex').value), value=$('#simplex-input').value.trim();
+  const tokens=value.replace(/[\[\](){}]/g,'').split(/[\s,;]+/).filter(Boolean);
+  if(!tokens.length){toast('Informe os vértices do simplexo (ex.: 0,1,2).',true);return;}
+  if(tokens.some(t=>!/^\d+$/.test(t))){toast('Use apenas identificadores inteiros não negativos, separados por vírgulas.',true);return;}
+  try{
+    if(new Set(tokens).size!==tokens.length)throw Error('Os identificadores não podem se repetir no mesmo simplexo.');
+    addSimplex(panel,tokens.map(Number));$('#simplex-input').value='';choosePanel(panel);
+    toast(`Simplexo [${tokens.join(',')}] adicionado a K${panel}.`);
+  }catch(err){toast(err.message,true);}
+}
+function exportJSON(){
+  const payload={format:'zigzag-lab/v1',field:'F2',vertices:state.vertices,complexes:state.complexes.map(s=>[...s].sort())};
+  const blob=new Blob([JSON.stringify(payload,null,2)],{type:'application/json'});
+  const url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='zigzag-complexos.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),800);
+  toast('Complexos exportados em JSON.');
+}
+function importJSON(raw){
+  const data=JSON.parse(raw);
+  if(!Array.isArray(data.vertices)||!Array.isArray(data.complexes)||data.complexes.length!==3)throw Error('O JSON deve conter vertices e complexes (3 conjuntos).');
+  if(data.vertices.length>MAX_VERTICES)throw Error(`Máximo de ${MAX_VERTICES} vértices.`);
+  const vertices=[];
+  for(const v of data.vertices){
+    if(!Number.isSafeInteger(v.id)||v.id<0||!Number.isFinite(v.x)||!Number.isFinite(v.y)||vertices.some(x=>x.id===v.id))throw Error('Vértices inválidos no arquivo.');
+    vertices.push({id:v.id,x:Math.max(18,Math.min(282,v.x)),y:Math.max(18,Math.min(252,v.y))});
+  }
+  const vertexIds=new Set(vertices.map(v=>v.id)),sets=[];
+  for(const items of data.complexes){
+    if(!Array.isArray(items)||items.length>4000)throw Error('Lista inválida de simplexos.');
+    const s=new Set();
+    for(const key of items){
+      if(typeof key!=='string'|| !/^\d+(,\d+){0,3}$/.test(key))throw Error(`Simplexo inválido: ${key}.`);
+      const ids=sortedSimplex(parseKey(key));
+      if(ids.join(',')!==key||ids.some(id=>!vertexIds.has(id)))throw Error(`Simplexo não canônico: ${key}.`);
+      for(const x of simplexClosure(ids))s.add(x);
+    }
+    sets.push(s);
+  }
+  analyzeZigzag(sets); // validate inclusions and algebra before changing state
+  state.vertices=vertices;state.complexes=sets;state.pending=[];updateAll();
+  toast('JSON importado com sucesso.');
+}
+function init(){
+  $$('.tool').forEach(b=>b.addEventListener('click',()=>selectTool(b.dataset.tool)));
+  $$('svg.complex-canvas').forEach(svg=>{
+    svg.addEventListener('pointerdown',handlePointerDown);
+    svg.addEventListener('pointermove',handlePointerMove);
+    svg.addEventListener('pointerup',handlePointerUp);
+    svg.addEventListener('pointercancel',handlePointerUp);
+    svg.addEventListener('lostpointercapture',()=>{state.drag=null;});
+  });
+  $$('.complex-card').forEach(card=>card.addEventListener('click',e=>{
+    if(!e.target.closest('.complex-canvas')&& !e.target.closest('.simplex-chip'))choosePanel(Number(card.dataset.complexPanel));
+  }));
+  $('#target-complex').addEventListener('change',e=>choosePanel(Number(e.target.value)));
+  $('#simplex-form').addEventListener('submit',handleSimplexForm);
+  $('#presets').addEventListener('change',e=>{preset(e.target.value);choosePanel(0);toast('Exemplo carregado.');});
+  document.addEventListener('click',e=>{
+    const btn=e.target.closest('[data-remove-simplex]');
+    if(btn){deleteSimplex(Number(btn.dataset.removePanel),parseKey(btn.dataset.removeSimplex));toast(`Simplexo [${btn.dataset.removeSimplex}] removido.`);}
+  });
+  $('#export-json').addEventListener('click',exportJSON);
+  $('#import-json').addEventListener('click',()=>$('#import-file').click());
+  $('#import-file').addEventListener('change',async e=>{
+    const file=e.target.files?.[0];if(!file)return;
+    try{importJSON(await file.text());}catch(err){toast(`Erro na importação: ${err.message}`,true);}
+    e.target.value='';
+  });
+  $('#reset-view').addEventListener('click',()=>{$('#presets').value='conversation';preset('conversation');choosePanel(0);toast('Exemplo original restaurado.');});
+  document.body.classList.add('tool-move');
+  preset('conversation');choosePanel(0);
+}
+init();
+
+</script>
+</body>
+</html>
