@@ -4,6 +4,26 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#f6f9fb">
+  <script>
+    // Apply the theme before painting; storage may be unavailable for local files.
+    const themeMedia = window.matchMedia('(prefers-color-scheme: dark)');
+    let themePreference = null;
+    try { themePreference = localStorage.getItem('zigzag-lab-theme'); } catch {}
+    if (!['light', 'dark'].includes(themePreference)) themePreference = null;
+    function applyTheme(theme) {
+      document.documentElement.dataset.theme = theme;
+      document.querySelector('meta[name="theme-color"]').content = theme === 'dark' ? '#101923' : '#f6f9fb';
+      const toggle = document.getElementById('theme-toggle');
+      if (toggle) {
+        toggle.setAttribute('aria-pressed', String(theme === 'dark'));
+        toggle.title = theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode';
+      }
+    }
+    applyTheme(themePreference || (themeMedia.matches ? 'dark' : 'light'));
+    themeMedia.addEventListener('change', event => {
+      if (!themePreference) applyTheme(event.matches ? 'dark' : 'light');
+    });
+  </script>
   <title>Zigzag Lab — Interactive persistent homology</title>
   <style>
 :root{--ink:#182c40;--muted:#66788a;--line:#dfe8ee;--teal:#0f9389;--amber:#d88c34;--indigo:#6575bd;--paper:#ffffff;--bg:#f6f9fb;--radius:17px;--shadow:0 8px 38px rgba(32,55,80,.035);font-family:Inter,ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;color:var(--ink);background:var(--bg);font-synthesis:none}
@@ -47,12 +67,62 @@ body{background:radial-gradient(ellipse at top left,#e6f4f1 0,transparent 48%),v
   .inclusion-icon svg{transform:rotate(90deg)}
   .inclusion-label{font-size:11px}
 }
+:root{color-scheme:light;--barcode-0:#0f9389;--barcode-1:#d88c34;--barcode-2:#6575bd;--barcode-grid:#dbe5eb;--barcode-text:#708593}
+.theme-toggle{margin-left:auto;display:flex;align-items:center;gap:8px;min-height:38px;padding:8px 12px;border:1px solid var(--line);border-radius:10px;background:var(--paper);color:var(--ink);font-size:12px;font-weight:650;white-space:nowrap}
+.theme-toggle:hover{border-color:var(--teal)}
+.theme-toggle svg{width:17px;height:17px;color:var(--teal)}
+.theme-toggle[aria-pressed="true"]{border-color:var(--teal);background:#193b39}
+:root[data-theme="dark"]{color-scheme:dark;--ink:#e2edf5;--muted:#a3b7c7;--line:#304354;--teal:#64d8c5;--paper:#192633;--bg:#101923;--barcode-0:#64d8c5;--barcode-1:#f0b965;--barcode-2:#a5aff5;--barcode-grid:#3c5163;--barcode-text:#afc2d1}
+[data-theme="dark"] body{background:radial-gradient(ellipse at top left,#163333 0,transparent 48%),var(--bg)}
+[data-theme="dark"] .surface{box-shadow:0 8px 30px #0002}
+[data-theme="dark"] :is(.eyebrow,.section-kicker,.control-label,.complex-subtitle,.panel-intro,.barcode-desc,.simplex-help,.meta-row,.rank-summary,.barcode-legend,.site-footer,.simplex-group-title){color:#a3b7c7}
+[data-theme="dark"] :is(.logo-mark,.version,.complex-index,.small-tag,.complex-stats span,.simplex-details summary .counter,.barcode-count){background:#233c43;color:#b4d9d2;border-color:#365650}
+[data-theme="dark"] .head-equation{background:#192d35;border-color:#365650;color:#d2e9e5;box-shadow:none}
+[data-theme="dark"] :is(.head-equation .eq-arrow,.complex-label,.editing-note>span:first-child,.live-indicator,.link-button,.important-note strong){color:#64d8c5}
+[data-theme="dark"] .tool{color:#b5c8d6}
+[data-theme="dark"] .tool:hover{background:#263b48}
+[data-theme="dark"] .tool.active{background:#1d403d;color:#8be7d6;border-color:#427c70}
+[data-theme="dark"] .danger-tool:hover,[data-theme="dark"] .danger-tool.active{background:#4a2a30;color:#ffb5aa;border-color:#86505a}
+[data-theme="dark"] :is(input,select){background:#111e29;border-color:#42576a;color:var(--ink)}
+[data-theme="dark"] input::placeholder{color:#95abba}
+[data-theme="dark"] .complex-card{background:#172430;border-color:#354b5c}
+[data-theme="dark"] .complex-card.selected{border-color:#64d8c5;box-shadow:0 0 0 3px #64d8c522}
+[data-theme="dark"] .complex-title{background:linear-gradient(135deg,#1c373b,#192633);border-color:#304354}
+[data-theme="dark"] .complex-canvas{background-color:#13212c;background-image:radial-gradient(#304353 .85px,transparent .85px)}
+[data-theme="dark"] .complex-canvas .vertex{fill:#64d8c5;stroke:#13212c}
+[data-theme="dark"] .complex-canvas .vertex.selected-vertex{stroke:#ffce78}
+[data-theme="dark"] .complex-canvas .vertex-label{fill:#102c29}
+[data-theme="dark"] .complex-canvas .edge{stroke:#9db3c3}
+[data-theme="dark"] .complex-canvas .face{fill:#64d8c5;fill-opacity:.2}
+[data-theme="dark"] .complex-canvas .tetrahedron{fill:#b8a5ed;stroke:#b8a5ed;fill-opacity:.16}
+[data-theme="dark"] .complex-canvas rect[data-simplex-key]{fill:#362f51;stroke:#9d8bce}
+[data-theme="dark"] .complex-canvas .tetra-label{fill:#d0bff8}
+[data-theme="dark"] .complex-canvas .empty-canvas-msg{fill:#a3b7c7}
+[data-theme="dark"] :is(.complex-stats,.simplex-details,.barcode-card,.barcode-card-head,.rank-summary){border-color:#304354}
+[data-theme="dark"] :is(.complex-stats strong,.rank-summary strong,.formula .dim-symbol){color:#d1e7ef}
+[data-theme="dark"] :is(.simplex-details summary,.editing-note,.formula,.bottom-section p){color:#b3c7d5}
+[data-theme="dark"] .simplex-chip{background:#243747;border-color:#3b5163;color:#c5d8e4}
+[data-theme="dark"] .simplex-chip button{color:#b6c8d5}
+[data-theme="dark"] .simplex-chip button:hover{color:#ffb5aa}
+[data-theme="dark"] :is(.simplex-editor,.formula-box){background:#14242f;border-color:#304354}
+[data-theme="dark"] .primary-button{background:#64d8c5;color:#102c29}
+[data-theme="dark"] .primary-button:hover{background:#8be7d6}
+[data-theme="dark"] .inclusion-icon{background:#1b403c;border-color:#4c9a89;box-shadow:0 3px 12px #0003;color:#8be7d6}
+[data-theme="dark"] .inclusion-label{color:#9adacb}
+[data-theme="dark"] .important-note{background:#19352f;border-color:#365c50;border-left-color:#64d8c5}
+[data-theme="dark"] .important-note p{color:#b0d2c6}
+[data-theme="dark"] .live-indicator span{box-shadow:0 0 0 3px #255044}
+[data-theme="dark"] .legend-line{background:#9db3c3}
+[data-theme="dark"] :is(.line-sample,.vertex-legend){background:var(--barcode-0)}
+[data-theme="dark"] .point-sample{background:var(--barcode-1)}
+.barcode-svg text{fill:var(--barcode-text)}
+.barcode-svg line[stroke-dasharray]{stroke:var(--barcode-grid)}
 </style>
 </head>
 <body>
 <div class="app-shell">
   <header class="page-head">
-    <div class="brandline"><span class="logo-mark" aria-hidden="true">⌁</span><span class="brand">ZIGZAG <b>LAB</b></span><span class="version">v1.0</span></div>
+    <div class="brandline"><span class="logo-mark" aria-hidden="true">⌁</span><span class="brand">ZIGZAG <b>LAB</b></span><span class="version">v1.0</span><button id="theme-toggle" class="theme-toggle" type="button" aria-pressed="false" title="Switch to dark mode"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M20.5 14A8.5 8.5 0 0 1 10 3.5 8.5 8.5 0 1 0 20.5 14Z"/></svg><span>Dark mode</span></button></div>
     <div class="head-inner">
       <div>
         <div class="eyebrow">INTERACTIVE LAB · ALGEBRAIC TOPOLOGY</div>
@@ -331,7 +401,7 @@ function analyzeZigzag(complexes) {
 
 
 const SVG_NS = 'http://www.w3.org/2000/svg';
-const COLORS = ['#0f9389', '#d88c34', '#6575bd'];
+const COLORS = ['var(--barcode-0)', 'var(--barcode-1)', 'var(--barcode-2)'];
 const TOOL_SIZES = {edge:2,triangle:3,tetra:4};
 const TOOL_LABEL = {edge:'edge',triangle:'triangular face',tetra:'tetrahedron'};
 let state = { vertices:[], complexes:[new Set(),new Set(),new Set()], tool:'move', selectedPanel:0, pending:[], pendingPanel:null, drag:null };
@@ -656,6 +726,12 @@ function importJSON(raw){
   toast('JSON imported successfully.');
 }
 function init(){
+  applyTheme(document.documentElement.dataset.theme);
+  $('#theme-toggle').addEventListener('click',()=>{
+    themePreference = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
+    applyTheme(themePreference);
+    try { localStorage.setItem('zigzag-lab-theme', themePreference); } catch {}
+  });
   $$('.tool').forEach(b=>b.addEventListener('click',()=>selectTool(b.dataset.tool)));
   $$('svg.complex-canvas').forEach(svg=>{
     svg.addEventListener('pointerdown',handlePointerDown);
