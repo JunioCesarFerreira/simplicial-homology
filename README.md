@@ -17,7 +17,9 @@ The homology code is a JavaScript port of the Smith normal form method in [go-ho
 
 The repository also includes [Zigzag Lab](extra-zigzag/README.md), a standalone interactive introduction to persistent homology for $K_0 \to K_1 \leftarrow K_2$. Edit the three complexes and explore barcodes for $H_0$, $H_1$, and $H_2$ over $\mathbb{F}_2$, with predefined examples, JSON import/export, and light and dark themes.
 
-[Try Zigzag Lab online](https://juniocesarferreira.github.io/simplicial-homology/extra-zigzag/zigzag-lab.html) or open [extra-zigzag/zigzag-lab.html](extra-zigzag/zigzag-lab.html) locally. See the [lab README](extra-zigzag/README.md) for usage, theory, and limitations.
+[Try Zigzag Lab online](https://juniocesarferreira.github.io/simplicial-homology/extra-zigzag/zigzag-union-lab.html) or open [extra-zigzag/zigzag-union-lab.html](extra-zigzag/zigzag-union-lab.html) locally. See the [lab README](extra-zigzag/README.md) for usage, theory, and limitations.
+
+The [Intersection Zigzag Lab](extra-zigzag/zigzag-intersection-lab.html) explores $K_0 \leftarrow K_0\cap K_1 \rightarrow K_1$, computing the intersection automatically as you edit the two outer complexes. [Open online](https://juniocesarferreira.github.io/simplicial-homology/extra-zigzag/zigzag-intersection-lab.html).
 
 ## Running
 
@@ -84,7 +86,9 @@ Requires Node.js 20 or newer. Besides the known homology of every example, the s
 | [js/presets.js](js/presets.js) | Example complexes and their expected homology |
 | [js/app.js](js/app.js) | Canvas editor and results panel |
 | [tests/homology.test.js](tests/homology.test.js) | Test suite |
-| [extra-zigzag/zigzag-lab.html](extra-zigzag/zigzag-lab.html) | Standalone zigzag persistent homology lab |
+| [extra-zigzag/zigzag-union-lab.html](extra-zigzag/zigzag-union-lab.html) | Standalone zigzag persistent homology lab |
+| [extra-zigzag/zigzag-intersection-lab.html](extra-zigzag/zigzag-intersection-lab.html) | Intersection zigzag with an automatically computed middle complex |
+| [tests/zigzag-intersection.test.js](tests/zigzag-intersection.test.js) | Intersection zigzag algebra, editing, and JSON tests |
 | [extra-zigzag/README.md](extra-zigzag/README.md) | Zigzag Lab usage, theory, and limitations |
 
 ## Limitations
