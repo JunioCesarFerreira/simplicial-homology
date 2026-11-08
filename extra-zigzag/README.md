@@ -10,7 +10,7 @@ Standalone, interactive introductions to zigzag persistent homology over $\mathb
 
 In the union-oriented lab, the central complex contains both outer complexes but may also contain additional simplices. In the intersection lab, the central complex is exactly the set of shared simplices and updates automatically.
 
-The **Bridge Zigzag Lab** compares the ambient complex, exact union, intersection, and a forest-based bridge complex. Its bridge barcode agrees with the ambient diagram in $H_0$ and the exact-union diagram in positive degrees. See [the mathematical construction, proofs, examples, and limitations](bridge-zigzag-mathematics.md). The sections below describe the union-oriented and intersection labs.
+The **Bridge Zigzag Lab** compares the ambient complex, the subcomplex of the ambient complex induced by the endpoint vertices, the exact union, the intersection, and a forest-based bridge complex. Its bridge barcode agrees with the ambient diagram in $H_0$ and the induced-subcomplex diagram in positive degrees. See [the mathematical construction, proofs, examples, and limitations](bridge-zigzag-mathematics.md). The sections below describe the union-oriented and intersection labs.
 
 [Back to the main project](../README.md)
 

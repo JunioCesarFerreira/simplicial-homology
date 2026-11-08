@@ -141,7 +141,7 @@ body{background:radial-gradient(ellipse at top left,#e6f4f1 0,transparent 48%),v
       <div>
         <div class="eyebrow">INTERACTIVE LAB · ALGEBRAIC TOPOLOGY</div>
         <h1><em>Bridge zigzag</em> lab</h1>
-        <p class="lede">Compare four ways to connect A and B. The bridge complex M keeps the connectivity of an ambient complex C and the higher homology of the exact union A ∪ B.</p>
+        <p class="lede">Compare five ways to connect A and B. The bridge complex M keeps the connectivity of an ambient complex C and the higher homology of W, the part of C spanned by the vertices of A and B.</p>
       </div>
       <div class="head-equation" id="diagram-equation" aria-label="A included in M, which contains B">A → M ← B</div>
     </div>
@@ -165,6 +165,7 @@ body{background:radial-gradient(ellipse at top left,#e6f4f1 0,transparent 48%),v
         <option value="screenshot">Cycle and component bridges</option>
         <option value="sphere">H₂ — persistent sphere</option>
         <option value="filled">H₂ — filled only in C</option>
+        <option value="replaced">Vertex replaced from A to B</option>
         <option value="union-cycle">Cycle born in the exact union</option>
         <option value="endpoint-filled">Cycle already filled in A</option>
         <option value="union-filled">Both cycles killed by the union</option>
@@ -178,7 +179,7 @@ body{background:radial-gradient(ellipse at top left,#e6f4f1 0,transparent 48%),v
     <main class="surface left-pane">
       <div class="section-heading"><div><div class="section-kicker">01 / CONSTRUCTION</div><h2>Simplicial complexes</h2></div><span class="small-tag">Interactive editing</span></div>
       <div class="model-picker"><label for="middle-model">Middle complex</label><select id="middle-model">
-        <option value="bridge">M · bridge forest (automatic)</option><option value="ambient">C · ambient complex (editable)</option><option value="union">U · exact union (automatic)</option><option value="intersection">I · intersection (automatic)</option>
+        <option value="bridge">M · bridge forest (automatic)</option><option value="ambient">C · ambient complex (editable)</option><option value="induced">W · C on the vertices of A and B (automatic)</option><option value="union">U · exact union (automatic)</option><option value="intersection">I · intersection (automatic)</option>
       </select></div>
       <p class="model-note" id="model-note" aria-live="polite"></p>
       <div class="complex-strip">
@@ -215,7 +216,7 @@ body{background:radial-gradient(ellipse at top left,#e6f4f1 0,transparent 48%),v
         <form id="simplex-form" class="simplex-form"><label class="sr-only" for="target-complex">Complex</label><select id="target-complex"><option value="0">A</option><option value="1">C</option><option value="2">B</option></select><label class="sr-only" for="simplex-input">Simplex vertices</label><input id="simplex-input" placeholder="E.g.: 0,1,2" autocomplete="off"><button type="submit" class="primary-button">+ Add</button></form>
       </div>
       <div class="meta-row"><span><span class="legend-line bridge-sample"></span>Selected bridge edge</span><span><span class="legend-dot vertex-legend"></span>Vertex</span><span><span class="legend-line"></span>Edge</span><span><span class="legend-dot triangle-legend"></span>2-simplex</span><span><span class="legend-dot tetra-legend"></span>3-simplex</span></div>
-      <section class="comparison" aria-labelledby="comparison-heading"><h2 id="comparison-heading">Compare all four models</h2><p>Number of intervals spanning [0,2] in each degree. Select a middle complex above to inspect its full barcode.</p><div class="table-scroll"><table><thead><tr><th scope="col">Diagram</th><th scope="col">H₀</th><th scope="col">H₁</th><th scope="col">H₂</th></tr></thead><tbody id="comparison-body"></tbody></table></div><p id="bridge-summary" aria-live="polite"></p></section>
+      <section class="comparison" aria-labelledby="comparison-heading"><h2 id="comparison-heading">Compare all five models</h2><p>Number of intervals spanning [0,2] in each degree. Select a middle complex above to inspect its full barcode.</p><div class="table-scroll"><table><thead><tr><th scope="col">Diagram</th><th scope="col">H₀</th><th scope="col">H₁</th><th scope="col">H₂</th></tr></thead><tbody id="comparison-body"></tbody></table></div><p id="bridge-summary" aria-live="polite"></p></section>
     </main>
 
     <aside class="surface right-pane">
@@ -228,8 +229,8 @@ body{background:radial-gradient(ellipse at top left,#e6f4f1 0,transparent 48%),v
   </div>
 
   <section class="bottom-section surface">
-    <div><div class="section-kicker">03 / MODEL</div><h2>Connectivity without extra fillings</h2><p>Start with U = A ∪ B and every vertex of C. Contract each connected component of U for the purpose of choosing a forest, then add edges of C only when they join different components. The result satisfies U ⊆ M ⊆ C, H₀(M) ≅ H₀(C), and Hₖ(U) ≅ Hₖ(M) for k ≥ 1, via the inclusion maps.</p><p><a class="link-button" href="bridge-zigzag-mathematics.md">Read the construction, proofs, and limitations</a></p></div>
-    <div class="important-note"><strong>A modeling choice, not a union of barcodes</strong><p>M omits extra fillings and cycles introduced only by C. It does not recover cycles already filled in U. Highlighted edges are chosen by vertex ID, not geometric distance. Changing vertex positions does not change the barcode.</p></div>
+    <div><div class="section-kicker">03 / MODEL</div><h2>Connectivity without extra fillings</h2><p>Start with W, the simplices of C whose vertices all belong to A or B, and every vertex of C. Contract each connected component of W for the purpose of choosing a forest, then add edges of C only when they join different components. The result satisfies A ∪ B ⊆ W ⊆ M ⊆ C, H₀(M) ≅ H₀(C), and Hₖ(W) ≅ Hₖ(M) for k ≥ 1, via the inclusion maps.</p><p><a class="link-button" href="bridge-zigzag-mathematics.md">Read the construction, proofs, and limitations</a></p></div>
+    <div class="important-note"><strong>A modeling choice, not a union of barcodes</strong><p>M omits the fillings and cycles that C introduces through vertices outside A and B. It keeps every other simplex of C, so a vertex of A replaced by a nearby vertex of B hands its cycles over. It does not recover cycles already filled in W. Highlighted edges are chosen by vertex ID, not geometric distance. Changing vertex positions does not change the barcode.</p></div>
   </section>
 
   <footer class="site-footer"><span>Simplicial homology + zigzag persistence · exact computation over 𝔽₂</span><div class="footer-actions"><button id="export-json" class="link-button">Export JSON</button><button id="import-json" class="link-button">Import JSON</button><input type="file" id="import-file" accept="application/json,.json" hidden><button id="reset-view" class="link-button">Restore example</button></div></footer>
@@ -466,7 +467,7 @@ const SVG_NS = 'http://www.w3.org/2000/svg';
 const COLORS = ['var(--barcode-0)', 'var(--barcode-1)', 'var(--barcode-2)'];
 const TOOL_SIZES = {edge:2,triangle:3,tetra:4};
 const INPUT_NAMES = ['A','C','B'];
-const MODEL_NAMES = {bridge:'M',ambient:'C',union:'U',intersection:'I'};
+const MODEL_NAMES = {bridge:'M',ambient:'C',induced:'W',union:'U',intersection:'I'};
 let selectedModel='bridge', derived=null, modelResults=null;
 const TOOL_LABEL = {edge:'edge',triangle:'triangular face',tetra:'tetrahedron'};
 let state = { vertices:[], complexes:[new Set(),new Set(),new Set()], tool:'move', selectedPanel:0, pending:[], pendingPanel:null, drag:null };
@@ -498,20 +499,23 @@ function buildBridge(complexes) {
   const union=new Set([...a,...b]);
   for(const key of union)if(!c.has(key))throw Error('C must contain A and B.');
   const intersection=new Set([...a].filter(key=>b.has(key)));
+  // W: every simplex of C whose vertices all belong to A or B (the subcomplex they induce).
+  const endpointVertices=new Set(simplicesInDimension(union,0));
+  const induced=new Set([...c].filter(key=>key.split(',').every(v=>endpointVertices.has(v))));
   const vertices=simplicesInDimension(c,0).map(Number);
   const parent=new Map(vertices.map(id=>[id,id]));
   function find(id){if(!parent.has(id))throw Error('Missing vertex in C.');let root=id;while(parent.get(root)!==root)root=parent.get(root);while(id!==root){const next=parent.get(id);parent.set(id,root);id=next;}return root;}
   function join(x,y){const rx=find(x),ry=find(y);if(rx===ry)return false;parent.set(ry,rx);return true;}
-  for(const key of simplicesInDimension(union,1))join(...parseKey(key));
-  const middle=new Set([...union,...vertices.map(String)]), bridges=[];
+  for(const key of simplicesInDimension(induced,1))join(...parseKey(key));
+  const middle=new Set([...induced,...vertices.map(String)]), bridges=[];
   for(const key of simplicesInDimension(c,1)){
     if(join(...parseKey(key))){middle.add(key);bridges.push(key);}
   }
-  return {union,intersection,middle,bridges,bridgeSet:new Set(bridges)};
+  return {union,induced,intersection,middle,bridges,bridgeSet:new Set(bridges)};
 }
 function displayedComplexes(){
   if(!derived)return state.complexes;
-  const middle={bridge:derived.middle,ambient:state.complexes[1],union:derived.union,intersection:derived.intersection}[selectedModel];
+  const middle={bridge:derived.middle,ambient:state.complexes[1],induced:derived.induced,union:derived.union,intersection:derived.intersection}[selectedModel];
   return [state.complexes[0],middle,state.complexes[2]];
 }
 function editable(panel){return panel!==1||selectedModel==='ambient';}
@@ -535,7 +539,7 @@ function renderModelInfo(){
   $('#left-arrow-path').setAttribute('d',reverse?left:right);
   $('#right-arrow-path').setAttribute('d',reverse?right:left);
   $('svg[data-index="1"]').setAttribute('aria-label',`${label}: ${selectedModel==='ambient'?'editable ambient complex':'automatically computed complex'}`);
-  $('#model-note').textContent={bridge:'M is automatic. Highlighted edges connect components using C, without adding the extra fillings of C. Switch to C to edit candidate connections.',ambient:'Edit C to add candidate bridges and fillings. Deleting from C also removes affected simplices from A and B to preserve the inclusions.',union:'U contains exactly the simplices in A or B. No additional connections or fillings are added.',intersection:'I contains exactly the shared simplices. Its inclusion arrows point toward A and B.'}[selectedModel];
+  $('#model-note').textContent={bridge:'M is automatic. Highlighted edges connect components using C, without the simplices of C through vertices outside A and B. Switch to C to edit candidate connections.',ambient:'Edit C to add candidate bridges and fillings. Deleting from C also removes affected simplices from A and B to preserve the inclusions.',induced:'W contains every simplex of C whose vertices all belong to A or B. It is the base of M: it drops only what C adds through other vertices.',union:'U contains exactly the simplices in A or B. No additional connections or fillings are added.',intersection:'I contains exactly the shared simplices. Its inclusion arrows point toward A and B.'}[selectedModel];
   $$('.complex-card').forEach((el,i)=>el.classList.toggle('selected',i===state.selectedPanel&&editable(i)));
   $('#comparison-body').innerHTML=Object.keys(MODEL_NAMES).map(model=>`<tr class="${model===selectedModel?'current-model':''}"><th scope="row">${model==='intersection'?'A ← I → B':`A → ${MODEL_NAMES[model]} ← B`}${model===selectedModel?' · selected':''}</th>${modelResults[model].map(h=>`<td>${h.multiplicities['0,2']}</td>`).join('')}</tr>`).join('');
   $('#bridge-summary').textContent=`Selected bridges: ${derived.bridges.map(key=>'['+key+']').join(', ')||'none'}. All vertices of C are retained in M, including components that do not meet A or B.`;
@@ -588,8 +592,19 @@ function preset(name) {
     for(const simplex of [[0,9],[5,9],[4,7,8]])insertSimplex(1,simplex);
   }else if(name==='sphere'||name==='filled'){
     state.vertices=[{id:0,x:78,y:159},{id:1,x:222,y:159},{id:2,x:150,y:236},{id:3,x:150,y:43}];
-    for(const panel of [0,2])for(const face of [[0,1,2],[0,1,3],[0,2,3],[1,2,3]])insertSimplex(panel,face);
-    if(name==='filled')insertSimplex(1,[0,1,2,3]);
+    const faces=[[0,1,2],[0,1,3],[0,2,3],[1,2,3]];
+    for(const panel of [0,2])for(const face of faces)insertSimplex(panel,face);
+    if(name==='filled'){ // cone the sphere from a vertex that belongs to neither endpoint
+      state.vertices.push({id:4,x:150,y:140});
+      for(const face of faces)insertSimplex(1,[...face,4]);
+    }
+  }else if(name==='replaced'){
+    // A hexagonal cycle whose vertex 0 is replaced in B by the nearby vertex 6.
+    state.vertices=[0,1,2,3,4,5].map(i=>({id:i,x:Math.round(150+92*Math.cos(i*Math.PI/3)),y:Math.round(140+92*Math.sin(i*Math.PI/3))}));
+    state.vertices.push({id:6,x:272,y:182});
+    for(const [x,y] of [[0,1],[1,2],[2,3],[3,4],[4,5],[0,5]])insertSimplex(0,[x,y]);
+    for(const [x,y] of [[6,1],[1,2],[2,3],[3,4],[4,5],[5,6]])insertSimplex(2,[x,y]);
+    insertSimplex(1,[0,1,6]);insertSimplex(1,[0,5,6]);
   }else if(name==='union-cycle'){
     state.vertices=[{id:0,x:150,y:40},{id:1,x:60,y:140},{id:2,x:150,y:235},{id:3,x:240,y:140}];
     for(const edge of [[0,1],[1,2]])insertSimplex(0,edge);
@@ -629,7 +644,7 @@ function toolHint() {
     edge:'Select two vertices to create an edge. Required faces are added automatically.',
     triangle:'Select three vertices to create a 2-simplex (filled face). Edges and vertices are included automatically.',
     tetra:'Select four vertices to create a 3-simplex. Its four triangular faces are included automatically.',
-    erase:'Erase a simplex and its cofaces. Deleting from C also deletes affected simplices from A and B. M, U, and I update automatically.'
+    erase:'Erase a simplex and its cofaces. Deleting from C also deletes affected simplices from A and B. M, W, U, and I update automatically.'
   }[state.tool];
   if(state.pending.length)text=`${state.pending.length} of ${TOOL_SIZES[state.tool]} vertices selected in ${INPUT_NAMES[state.pendingPanel]}. Select the remaining vertices or click again to deselect.`;
   $('#tool-hint').textContent=text;
@@ -793,7 +808,7 @@ function updateAll(){
     const ambient=analyzeZigzag(state.complexes);
     derived=buildBridge(state.complexes);
     const [a,,b]=state.complexes;
-    modelResults={bridge:analyzeZigzag([a,derived.middle,b]),ambient,union:analyzeZigzag([a,derived.union,b]),intersection:analyzeIntersection([a,derived.intersection,b])};
+    modelResults={bridge:analyzeZigzag([a,derived.middle,b]),ambient,induced:analyzeZigzag([a,derived.induced,b]),union:analyzeZigzag([a,derived.union,b]),intersection:analyzeIntersection([a,derived.intersection,b])};
     renderModelInfo();renderDrawings();renderComplexMeta(modelResults[selectedModel]);renderBarcodes(modelResults[selectedModel]);
   }catch(err){console.error(err);toast(err.message,true);}
   toolHint();

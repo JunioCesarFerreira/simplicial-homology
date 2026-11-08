@@ -21,7 +21,7 @@ The repository also includes [Zigzag Lab](extra-zigzag/README.md), a standalone 
 
 The [Intersection Zigzag Lab](extra-zigzag/zigzag-intersection-lab.html) explores $K_0 \leftarrow K_0\cap K_1 \rightarrow K_1$, computing the intersection automatically as you edit the two outer complexes. [Open online](https://juniocesarferreira.github.io/simplicial-homology/extra-zigzag/zigzag-intersection-lab.html).
 
-The [Bridge Zigzag Lab](extra-zigzag/zigzag-bridge-lab.html) compares ambient, union, intersection, and bridge models. It constructs $A\to M\leftarrow B$ using forest edges to retain ambient connectivity while preserving the positive-dimensional homology of the exact union. [Mathematical details](extra-zigzag/bridge-zigzag-mathematics.md).
+The [Bridge Zigzag Lab](extra-zigzag/zigzag-bridge-lab.html) compares ambient, induced, union, intersection, and bridge models. It constructs $A\to M\leftarrow B$ using forest edges to retain ambient connectivity while preserving the positive-dimensional homology of the subcomplex of the ambient complex spanned by the vertices of $A$ and $B$. [Mathematical details](extra-zigzag/bridge-zigzag-mathematics.md).
 
 ## Running
 

@@ -56,7 +56,9 @@ test('screenshot example preserves the component matches and the shared cycle', 
   assert.deepEqual(app.json('modelResults.bridge.map(h=>h.multiplicities["0,2"])'), [2,1,0]);
   assert.deepEqual(app.json('modelResults.ambient.map(h=>h.multiplicities["0,2"])'), [2,0,0]);
   assert.deepEqual(app.json('modelResults.intersection.map(h=>h.multiplicities["0,2"])'), [1,1,0]);
-  assert.deepEqual(app.json('derived.bridges'), ['0,6','0,9','4,7','5,9']);
+  // W keeps the filled triangle [4,7,8] of C, whose vertices all lie in A or B.
+  assert.deepEqual(app.json('modelResults.induced.map(h=>h.betti)'), [[3,3,2],[1,1,1],[0,0,0]]);
+  assert.deepEqual(app.json('derived.bridges'), ['0,6','0,9','5,9']);
   assert(!app.get('#simplices-1').innerHTML.includes('data-remove-simplex'));
   assert.equal(app.get('#middle-label').textContent, 'M');
   assert(app.get('svg[data-index="1"]').children.some(el=>el.class==='edge bridge-edge'));
@@ -65,7 +67,7 @@ test('screenshot example preserves the component matches and the shared cycle', 
 
 test('all modes render and model changes do not mutate the input complexes', () => {
   const app=lab(), before=app.json('state.complexes.map(c=>[...c])');
-  for(const model of ['ambient','union','intersection','bridge']){
+  for(const model of ['ambient','induced','union','intersection','bridge']){
     app.run(`selectModel('${model}')`);
     assert.deepEqual(app.json('state.complexes.map(c=>[...c])'),before);
     assert.equal(app.get('#middle-model').value,model);
@@ -79,13 +81,21 @@ test('all modes render and model changes do not mutate the input complexes', () 
 
 test('presets include limits of the construction and ambient-only components', () => {
   const app=lab();
-  for(const name of ['sphere','filled','union-cycle','endpoint-filled','union-filled','ambient-only','empty']){
+  for(const name of ['sphere','filled','replaced','union-cycle','endpoint-filled','union-filled','ambient-only','empty']){
     app.run(`preset('${name}')`);
-    for(const model of ['bridge','ambient','union','intersection'])app.run(`selectModel('${model}')`);
+    for(const model of ['bridge','ambient','induced','union','intersection'])app.run(`selectModel('${model}')`);
   }
   app.run("preset('filled')");
   assert.deepEqual(app.json('modelResults.bridge[2].betti'),[1,1,1]);
   assert.deepEqual(app.json('modelResults.ambient[2].betti'),[1,0,1]);
+  assert.deepEqual(app.json('derived.bridges'),['0,4']);
+  // A vertex replaced by a nearby one hands the cycle over in W and M, but not in U.
+  app.run("preset('replaced')");
+  for(const model of ['bridge','ambient','induced'])
+    assert.deepEqual(app.json(`modelResults.${model}[1].multiplicities`),{'0,0':0,'0,1':0,'0,2':1,'1,1':0,'1,2':0,'2,2':0});
+  assert.deepEqual(app.json('modelResults.union[1].betti'),[1,2,1]);
+  assert.deepEqual(app.json('modelResults.union[1].multiplicities'),{'0,0':0,'0,1':1,'0,2':0,'1,1':0,'1,2':1,'2,2':0});
+  assert.deepEqual(app.json('derived.bridges'),[]);
   app.run("preset('union-filled')");
   assert.deepEqual(app.json('modelResults.bridge[1].betti'),[1,0,1]);
   assert.equal(app.run('modelResults.bridge[1].multiplicities["0,2"]'),0);
@@ -153,7 +163,7 @@ function components(c){
   return result;
 }
 
-test('150 random bridges preserve ambient connectivity and union higher homology', () => {
+test('150 random bridges preserve ambient connectivity and the higher homology of W', () => {
   const app=lab();let seed=94;
   const random=()=>((seed=(Math.imul(seed,1664525)+1013904223)>>>0)/2**32);
   const closure=mask=>{
@@ -167,21 +177,23 @@ test('150 random bridges preserve ambient connectivity and union higher homology
       if(random()<.18)for(const key of closure(mask))c.add(key);
     }
     app.context.input=[a,c,b];
-    const built=app.json('(()=>{const d=buildBridge(input);return {middle:[...d.middle],union:[...d.union],bridges:d.bridges}})()');
-    const m=new Set(built.middle),u=new Set(built.union);
-    for(const key of u)assert(m.has(key));for(const key of m)assert(c.has(key));
+    const built=app.json('(()=>{const d=buildBridge(input);return {middle:[...d.middle],union:[...d.union],induced:[...d.induced],bridges:d.bridges}})()');
+    const m=new Set(built.middle),u=new Set(built.union),w=new Set(built.induced);
+    const kept=new Set([...a,...b].filter(key=>!key.includes(',')));
+    assert.deepEqual([...w].sort(),[...c].filter(key=>key.split(',').every(v=>kept.has(v))).sort());
+    for(const key of u)assert(w.has(key));for(const key of w)assert(m.has(key));for(const key of m)assert(c.has(key));
     const cm=components(m),cc=components(c);
     assert.deepEqual([...cm.keys()].sort(),[...cc.keys()].sort());
     for(const x of cc.keys())for(const y of cc.keys())assert.equal(cm.get(x)===cm.get(y),cc.get(x)===cc.get(y));
-    for(const k of [1,2])assert.equal(betti(m,k),betti(u,k));
-    const current=new Set([...u,...faces(c,0)]);
+    for(const k of [1,2])assert.equal(betti(m,k),betti(w,k));
+    const current=new Set([...w,...faces(c,0)]);
     for(const key of built.bridges){const [x,y]=key.split(',');const partition=components(current);assert.notEqual(partition.get(x),partition.get(y));current.add(key);}
-    app.context.middle=m;app.context.union=u;
+    app.context.middle=m;app.context.induced=w;
     const bm=app.json('analyzeZigzag([input[0],middle,input[2]])');
     const bc=app.json('analyzeZigzag(input)');
-    const bu=app.json('analyzeZigzag([input[0],union,input[2]])');
+    const bw=app.json('analyzeZigzag([input[0],induced,input[2]])');
     assert.deepEqual(bm[0].multiplicities,bc[0].multiplicities);
-    for(const k of [1,2])assert.deepEqual(bm[k].multiplicities,bu[k].multiplicities);
+    for(const k of [1,2])assert.deepEqual(bm[k].multiplicities,bw[k].multiplicities);
     // The selected tree may depend on IDs, but insertion order cannot change it.
     app.context.reversed=[a,c,b].map(set=>new Set([...set].reverse()));
     assert.deepEqual(app.json('buildBridge(reversed).bridges'),built.bridges);
