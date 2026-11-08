@@ -21,6 +21,8 @@ The repository also includes [Zigzag Lab](extra-zigzag/README.md), a standalone 
 
 The [Intersection Zigzag Lab](extra-zigzag/zigzag-intersection-lab.html) explores $K_0 \leftarrow K_0\cap K_1 \rightarrow K_1$, computing the intersection automatically as you edit the two outer complexes. [Open online](https://juniocesarferreira.github.io/simplicial-homology/extra-zigzag/zigzag-intersection-lab.html).
 
+The [Bridge Zigzag Lab](extra-zigzag/zigzag-bridge-lab.html) compares ambient, union, intersection, and bridge models. It constructs $A\to M\leftarrow B$ using forest edges to retain ambient connectivity while preserving the positive-dimensional homology of the exact union. [Mathematical details](extra-zigzag/bridge-zigzag-mathematics.md).
+
 ## Running
 
 There is no build step and there are no dependencies. Open `index.html` in a browser, or serve the folder:
@@ -88,6 +90,9 @@ Requires Node.js 20 or newer. Besides the known homology of every example, the s
 | [tests/homology.test.js](tests/homology.test.js) | Test suite |
 | [extra-zigzag/zigzag-union-lab.html](extra-zigzag/zigzag-union-lab.html) | Standalone zigzag persistent homology lab |
 | [extra-zigzag/zigzag-intersection-lab.html](extra-zigzag/zigzag-intersection-lab.html) | Intersection zigzag with an automatically computed middle complex |
+| [extra-zigzag/zigzag-bridge-lab.html](extra-zigzag/zigzag-bridge-lab.html) | Bridge construction and comparison of four middle complexes |
+| [extra-zigzag/bridge-zigzag-mathematics.md](extra-zigzag/bridge-zigzag-mathematics.md) | Bridge construction, proofs, and limitations |
+| [tests/zigzag-bridge.test.js](tests/zigzag-bridge.test.js) | Bridge invariants, examples, comparison views, and JSON tests |
 | [tests/zigzag-intersection.test.js](tests/zigzag-intersection.test.js) | Intersection zigzag algebra, editing, and JSON tests |
 | [extra-zigzag/README.md](extra-zigzag/README.md) | Zigzag Lab usage, theory, and limitations |
 

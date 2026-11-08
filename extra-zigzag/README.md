@@ -1,19 +1,22 @@
 # Zigzag Labs
 
-A pair of standalone, interactive introductions to zigzag persistent homology over $\mathbb{F}_2$, with barcodes in dimensions 0, 1, and 2.
+Standalone, interactive introductions to zigzag persistent homology over $\mathbb{F}_2$, with barcodes in dimensions 0, 1, and 2.
 
 | Lab | Diagram | Open |
 |---|---|---|
 | Union orientation | $K_0 \to K_1 \leftarrow K_2$ | [HTML](zigzag-union-lab.html) · [Online](https://juniocesarferreira.github.io/simplicial-homology/extra-zigzag/zigzag-union-lab.html) |
 | Intersection | $K_0 \leftarrow K_0\cap K_1 \rightarrow K_1$ | [HTML](zigzag-intersection-lab.html) · [Online](https://juniocesarferreira.github.io/simplicial-homology/extra-zigzag/zigzag-intersection-lab.html) |
+| Bridge comparison | $A\to M\leftarrow B$ | [HTML](zigzag-bridge-lab.html) · [Online](https://juniocesarferreira.github.io/simplicial-homology/extra-zigzag/zigzag-bridge-lab.html) |
 
 In the union-oriented lab, the central complex contains both outer complexes but may also contain additional simplices. In the intersection lab, the central complex is exactly the set of shared simplices and updates automatically.
+
+The **Bridge Zigzag Lab** compares the ambient complex, exact union, intersection, and a forest-based bridge complex. Its bridge barcode agrees with the ambient diagram in $H_0$ and the exact-union diagram in positive degrees. See [the mathematical construction, proofs, examples, and limitations](bridge-zigzag-mathematics.md). The sections below describe the union-oriented and intersection labs.
 
 [Back to the main project](../README.md)
 
 ## Run locally
 
-Open either HTML file in a modern browser. Each contains its own HTML, CSS, and JavaScript; no installation, build, or external libraries are required.
+Open any of the HTML files in a modern browser. Each contains its own HTML, CSS, and JavaScript; no installation, build, or external libraries are required.
 
 Alternatively, run this command from the repository root:
 
@@ -21,7 +24,7 @@ Alternatively, run this command from the repository root:
 python3 -m http.server 8000
 ```
 
-Then open `/extra-zigzag/zigzag-union-lab.html` or `/extra-zigzag/zigzag-intersection-lab.html` at <http://localhost:8000>.
+Then open the chosen HTML file under `/extra-zigzag/` at <http://localhost:8000>.
 
 ## Using the lab
 
