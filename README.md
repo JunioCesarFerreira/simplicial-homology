@@ -13,6 +13,12 @@ Draw vertices, fill in edges, triangles, tetrahedra or higher simplices, and the
 
 The homology code is a JavaScript port of the Smith normal form method in [go-homology](https://github.com/JunioCesarFerreira/go-homology). Its README explains the theory.
 
+## Zigzag Lab
+
+The repository also includes [Zigzag Lab](extra-zigzag/README.md), a standalone interactive introduction to persistent homology for $K_0 \to K_1 \leftarrow K_2$. Edit the three complexes and explore barcodes for $H_0$, $H_1$, and $H_2$ over $\mathbb{F}_2$, with predefined examples, JSON import/export, and light and dark themes.
+
+Open [extra-zigzag/zigzag-lab.html](extra-zigzag/zigzag-lab.html) locally. Once included in the GitHub Pages deployment, the lab is available at <https://juniocesarferreira.github.io/simplicial-homology/extra-zigzag/zigzag-lab.html>. See the [lab README](extra-zigzag/README.md) for usage, theory, limitations, and publication instructions.
+
 ## Running
 
 The app is published at <https://juniocesarferreira.github.io/simplicial-homology/>. To run it locally: there is no build step and there are no dependencies. Open `index.html` in a browser, or serve the folder:
@@ -78,6 +84,8 @@ Requires Node.js 20 or newer. Besides the known homology of every example, the s
 | [js/presets.js](js/presets.js) | Example complexes and their expected homology |
 | [js/app.js](js/app.js) | Canvas editor and results panel |
 | [tests/homology.test.js](tests/homology.test.js) | Test suite |
+| [extra-zigzag/zigzag-lab.html](extra-zigzag/zigzag-lab.html) | Standalone zigzag persistent homology lab |
+| [extra-zigzag/README.md](extra-zigzag/README.md) | Zigzag Lab usage, theory, and GitHub Pages instructions |
 
 ## Limitations
 
