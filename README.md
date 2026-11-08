@@ -17,17 +17,17 @@ The homology code is a JavaScript port of the Smith normal form method in [go-ho
 
 The repository also includes [Zigzag Lab](extra-zigzag/README.md), a standalone interactive introduction to persistent homology for $K_0 \to K_1 \leftarrow K_2$. Edit the three complexes and explore barcodes for $H_0$, $H_1$, and $H_2$ over $\mathbb{F}_2$, with predefined examples, JSON import/export, and light and dark themes.
 
-Open [extra-zigzag/zigzag-lab.html](extra-zigzag/zigzag-lab.html) locally. Once included in the GitHub Pages deployment, the lab is available at <https://juniocesarferreira.github.io/simplicial-homology/extra-zigzag/zigzag-lab.html>. See the [lab README](extra-zigzag/README.md) for usage, theory, limitations, and publication instructions.
+[Try Zigzag Lab online](https://juniocesarferreira.github.io/simplicial-homology/extra-zigzag/zigzag-lab.html) or open [extra-zigzag/zigzag-lab.html](extra-zigzag/zigzag-lab.html) locally. See the [lab README](extra-zigzag/README.md) for usage, theory, and limitations.
 
 ## Running
 
-The app is published at <https://juniocesarferreira.github.io/simplicial-homology/>. To run it locally: there is no build step and there are no dependencies. Open `index.html` in a browser, or serve the folder:
+There is no build step and there are no dependencies. Open `index.html` in a browser, or serve the folder:
 
 ```bash
 python3 -m http.server 8000   # then open http://localhost:8000
 ```
 
-The folder can be published as-is on any static host. The site above is served by GitHub Pages from the root of the `main` branch, so every push to `main` updates it.
+The repository can be served as-is by any static host.
 
 ## Using the editor
 
@@ -85,7 +85,7 @@ Requires Node.js 20 or newer. Besides the known homology of every example, the s
 | [js/app.js](js/app.js) | Canvas editor and results panel |
 | [tests/homology.test.js](tests/homology.test.js) | Test suite |
 | [extra-zigzag/zigzag-lab.html](extra-zigzag/zigzag-lab.html) | Standalone zigzag persistent homology lab |
-| [extra-zigzag/README.md](extra-zigzag/README.md) | Zigzag Lab usage, theory, and GitHub Pages instructions |
+| [extra-zigzag/README.md](extra-zigzag/README.md) | Zigzag Lab usage, theory, and limitations |
 
 ## Limitations
 

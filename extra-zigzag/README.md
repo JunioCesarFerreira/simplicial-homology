@@ -6,15 +6,13 @@ $$K_0 \hookrightarrow K_1 \hookleftarrow K_2,$$
 
 and explore the resulting barcodes in dimensions 0, 1, and 2, with coefficients in $\mathbb{F}_2$.
 
-**Application:** [zigzag-lab.html](zigzag-lab.html)
-
-**GitHub Pages URL (after publication):** <https://juniocesarferreira.github.io/simplicial-homology/extra-zigzag/zigzag-lab.html>
+**Try it online: <https://juniocesarferreira.github.io/simplicial-homology/extra-zigzag/zigzag-lab.html>**
 
 [Back to the main project](../README.md)
 
 ## Run locally
 
-Open `zigzag-lab.html` in a modern browser. All HTML, CSS, and JavaScript are contained in this file; no installation, build, or external libraries are required.
+Open [zigzag-lab.html](zigzag-lab.html) in a modern browser. All HTML, CSS, and JavaScript are contained in this file; no installation, build, or external libraries are required.
 
 Alternatively, run this command from the repository root:
 
@@ -88,13 +86,3 @@ Thus the Betti numbers alone do not determine the barcode.
 - At most 12 distinct vertices across the three complexes and simplices of dimension at most 3.
 - Results for $H_0$, $H_1$, and $H_2$ only.
 - The lab has its own implementation embedded in the HTML file. The main project's `npm test` suite tests `js/homology.js`, not this standalone lab.
-
-## GitHub Pages
-
-The lab is a static file and can be published alongside the main application. With the repository root of `main` configured as the Pages source, include `extra-zigzag/zigzag-lab.html` in that branch and let the Pages deployment complete.
-
-The application will then be available at:
-
-<https://juniocesarferreira.github.io/simplicial-homology/extra-zigzag/zigzag-lab.html>
-
-Use the full `.html` path: this directory does not contain an `index.html`. If you use a custom deployment workflow, include the `extra-zigzag` directory in the published artifact as well.
