@@ -99,13 +99,13 @@ This argument concerns the inclusion maps, not merely equality of Betti numbers.
 
 The preceding isomorphisms commute with the maps from $A$ and $B$. Therefore:
 
-$$\operatorname{Bar}_0(A\to M\leftarrow B)
-=\operatorname{Bar}_0(A\to C\leftarrow B),$$
+$$\text{Bar}_0(A\to M\leftarrow B)
+=\text{Bar}_0(A\to C\leftarrow B),$$
 
 and, for every $k\geq1$,
 
-$$\operatorname{Bar}_k(A\to M\leftarrow B)
-=\operatorname{Bar}_k(A\to W\leftarrow B).$$
+$$\text{Bar}_k(A\to M\leftarrow B)
+=\text{Bar}_k(A\to W\leftarrow B).$$
 
 These are equalities of interval multisets, including multiplicities and middle-only intervals. The construction thus realizes a degree-dependent combination with **one actual intermediate simplicial complex**: degree zero follows $C$, and positive degrees follow $W$.
 
@@ -131,7 +131,7 @@ In zigzags of evolving point sets, where each step replaces some points by nearb
 
 The tool builds simplicial boundary matrices and computes
 
-$$H_k(X;\mathbb F_2)=\ker\partial_k/\operatorname{im}\partial_{k+1}$$
+$$H_k(X;\mathbb F_2)=\ker\partial_k/\text{im}\partial_{k+1}$$
 
 by exact binary Gaussian elimination with `BigInt` bit vectors. Tetrahedra contribute to $\partial_3$, so their effect on $H_2$ is included. Representative cycles determine the induced maps in homology.
 
@@ -141,7 +141,7 @@ $$L=H_k(A),\quad V=H_k(X),\quad R=H_k(B),$$
 
 $$f:L\to V,\qquad g:R\to V.$$
 
-Set $r_f=\operatorname{rank}f$, $r_g=\operatorname{rank}g$, $t=\operatorname{rank}[f\;g]$, and $s=r_f+r_g-t$. Thus $s=\dim(\operatorname{im}f\cap\operatorname{im}g)$.
+Set $r_f=\text{rank}f$, $r_g=\text{rank}g$, $t=\text{rank}[f\;g]$, and $s=r_f+r_g-t$. Thus $s=\dim(\text{im}f\cap\text{im}g)$.
 
 | Interval | Multiplicity |
 |---|---|
@@ -156,7 +156,7 @@ For the intersection diagram $A\leftarrow I\to B$, the maps instead share a sour
 
 $$f:H_k(I)\to H_k(A),\qquad g:H_k(I)\to H_k(B).$$
 
-With $r=\operatorname{rank}(f,g)$ for the stacked map into $H_k(A)\oplus H_k(B)$, the multiplicities in the same row order are
+With $r=\text{rank}(f,g)$ for the stacked map into $H_k(A)\oplus H_k(B)$, the multiplicities in the same row order are
 
 $$\dim H_k(A)-r_f,\quad r-r_g,\quad r_f+r_g-r,\quad
 \dim H_k(I)-r,\quad r-r_f,\quad \dim H_k(B)-r_g.$$
